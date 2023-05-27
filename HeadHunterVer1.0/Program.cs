@@ -33,6 +33,7 @@ builder.Services.ConfigureApplicationCookie(o =>
     o.SlidingExpiration = true;
 });
 
+builder.Services.AddScoped<IdentityErrorDescriber, RussianErrorDescriber>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
