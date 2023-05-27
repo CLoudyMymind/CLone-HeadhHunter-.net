@@ -38,5 +38,5 @@ public class AccountsController : Controller
     {
         
         return View(await _accountService.AboutProfileAsync(id , HttpContext.User));
-    }
+    } 
 }

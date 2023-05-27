@@ -8,4 +8,4 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 public interface IAccountService
 {
     Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user);
-}
+ }

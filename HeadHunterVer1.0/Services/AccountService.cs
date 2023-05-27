@@ -18,6 +18,7 @@ public class AccountService : IAccountService
         _userService = userService;
         _signInManager = signInManager;
     }
+    
     public async Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user)
     {
         var userData = await _userService.UserSearchAsync(id, user);
