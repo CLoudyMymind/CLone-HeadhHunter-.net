@@ -1,9 +1,53 @@
+using HeadHunterVer1._0.Context;
+using HeadHunterVer1._0.Models;
+using HeadHunterVer1._0.Services;
+using HeadHunterVer1._0.Services.Abstractions;
+using HeadHunterVer1._0.Services.DataSeed;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<HeadHunterContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.ConfigureApplicationCookie(o =>
+{
+    o.Cookie.HttpOnly = true;
+    o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    o.SlidingExpiration = true;
+});
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILoginsService, LoginService>();
+builder.Services.AddScoped<IRegisterService, RegisterService>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+});
 var app = builder.Build();
+var serviceProvider = app.Services;
+using var scope = serviceProvider.CreateScope();
+try
+{
+    UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await RoleInitial.SeedRoleAsync(userManager, roleManager);
+}
+catch (Exception e)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogCritical(e, "Не удалось добавить админа в БД");
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -22,6 +66,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Accounts}/{action=Login}/{id?}");
+app.MapControllers(); 
+
 
 app.Run();
