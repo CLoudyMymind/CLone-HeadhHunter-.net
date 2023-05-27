@@ -1,0 +1,11 @@
+﻿namespace HeadHunterVer1._0.ViewModels;
+
+public class AboutViewModel
+{
+    public string PathFile { get; set; }
+
+    public string NameCompanyOrUser { get; set; }
+
+    public string Email { get; set; }
+
+}

@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model HeadHunterVer1._0.ViewModels.AboutViewModel
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "личный кабинет";
+    Layout = "_Layout";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+<div class="container">
+    <h1 class="text-black text-center fs-3">Добро пожаловать в личный кабинет</h1>
+    <hr>
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <div class="card" style="width: 100%;">
+                <img src="@Model.PathFile" class="card-img-top" alt="Path File">
+                <div class="card-body">
+                    <p class="card-text card-title">
+                        <strong>Имя:</strong> @Model.NameCompanyOrUser
+                    </p>
+                    <p class="card-text card-title">
+                        <strong>Почта:</strong> @Model.Email
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
