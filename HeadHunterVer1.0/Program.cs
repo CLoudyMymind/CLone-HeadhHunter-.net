@@ -16,6 +16,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HeadHunterContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 4;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.User.RequireUniqueEmail = true; 
+    })
+    .AddEntityFrameworkStores<HeadHunterContext>();
 builder.Services.ConfigureApplicationCookie(o =>
 {
     o.Cookie.HttpOnly = true;
@@ -67,7 +77,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Accounts}/{action=Login}/{id?}");
-app.MapControllers(); 
+app.MapControllers(); // Используем верхнеуровневую регистрацию маршрутов
 
+// apps.MapControllerRoute(
+//     name: "download",
+//     pattern: "download",
+//     defaults: new { controller = "Accounts", action = "DownloadPdf" });
 
 app.Run();
