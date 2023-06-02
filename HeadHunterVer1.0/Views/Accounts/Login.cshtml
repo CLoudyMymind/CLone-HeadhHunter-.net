@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="~/css/LoginPage.css" asp-append-version="true"/>
 
 <h2 class="text-center mb-4">Вход в HeadHunter</h2>
-<form method="post" asp-controller="Logins" asp-action="Login" asp-antiforgery="true"
+<form method="post" asp-controller="Accounts" asp-action="Login" asp-antiforgery="true"
       asp-route-returnUrl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="form-group">
@@ -23,6 +23,6 @@
     <button type="submit" class="btn btn-primary btn-block">Войти</button>
     <div class="text-center mt-3">
         <span>У вас нет аккаунта?</span>
-        <a asp-action="Register" asp-controller="Registers">Зарегистрируйтесь</a>
+        <a asp-action="Register" asp-controller="Accounts">Зарегистрируйтесь</a>
     </div>
 </form>
