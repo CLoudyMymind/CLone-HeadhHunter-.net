@@ -1,4 +1,14 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿
+    //скрипт на смену Label
+    function toggleNicknameField(isEmployer) {
+    let nicknameLabel = document.getElementById("nicknameLabel");
+    let nicknameInput = document.getElementById("nicknameInput");
 
-// Write your JavaScript code.
+    if (isEmployer) {
+    nicknameLabel.innerText = "Введите название компании";
+    nicknameInput.setAttribute("placeholder", "Название компании");
+} else {
+    nicknameLabel.innerText = "Ваш никнейм";
+    nicknameInput.setAttribute("placeholder", "Никнейм");
+}
+}
