@@ -7,5 +7,6 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 public interface IUserService
 {
     Task<User?> UserSearchAsync(string? id, ClaimsPrincipal user);
+    Task<User?> CheckPhoneNumber(string phone);
 
 }

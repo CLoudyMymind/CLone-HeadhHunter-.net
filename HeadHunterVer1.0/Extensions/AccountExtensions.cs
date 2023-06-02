@@ -34,7 +34,8 @@ namespace HeadHunterVer1._0.Extensions
             {
                 Email = model.Email,
                 UserName = model.NameCompanyOrUser,
-                PathFile = imgPath!
+                PathFile = imgPath!,
+                PhoneNumber = model.PhoneNumber
             };
         }
         public async Task<EditAccountProfileViewModels> EditAccountProfileExtensions(User data)

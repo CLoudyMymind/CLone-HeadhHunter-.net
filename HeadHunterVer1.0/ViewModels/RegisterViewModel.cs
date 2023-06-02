@@ -12,7 +12,7 @@ public class RegisterViewModel
     public string? PathToAvatarFile { get; set; }
     
     [DataType(DataType.Text , ErrorMessage = "тут должен быть только текст")]
-    [Required(ErrorMessage = "Заполните данные")]
+    [Required(ErrorMessage = "Вы не заполнели имя (Для заполнения нужно выбрать роль)")]
     [Display(Name = "Укажите ваше имя")]
     public string NameCompanyOrUser { get; set; }
     
@@ -34,6 +34,10 @@ public class RegisterViewModel
     
     [Required(ErrorMessage = "Выберете вашу роль")]
     public string  Role { get; set; }
+    
+    [Required(ErrorMessage = "Введите номер телефона")]
+    [RegularExpression(@"^(\+7)?(\d{10})$", ErrorMessage = "Номер телефона должен быть в формате +7XXXXXXXXXX.")]
+    public string PhoneNumber { get; set; }
     
 }
 
