@@ -1,4 +1,5 @@
 using HeadHunterVer1._0.Context;
+using HeadHunterVer1._0.Extensions;
 using HeadHunterVer1._0.Models;
 using HeadHunterVer1._0.Services;
 using HeadHunterVer1._0.Services.Abstractions;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddDbContext<HeadHunterContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,8 +39,11 @@ builder.Services.AddScoped<IdentityErrorDescriber, RussianErrorDescriber>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ILoginsService, LoginService>();
-builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<AccountExtensions>();
+builder.Services.AddScoped<MapTo>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IEmployerService, EmployerService>();
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -51,7 +56,18 @@ try
 {
     UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    // добавление ролей в бд при старте проекта
     await RoleInitial.SeedRoleAsync(userManager, roleManager);
+    // добавление категорий при старте проекта
+    try
+    {
+        CategorySeed.CategoryDataSeed(scope.ServiceProvider);
+    }
+    catch (Exception e)
+    {
+        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogCritical(e, "Не удалось добавить категории в БД");;
+    }
 }
 catch (Exception e)
 {
@@ -77,12 +93,12 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Accounts}/{action=Login}/{id?}");
+    pattern: "{controller=Logins}/{action=Login}/{id?}");
 app.MapControllers(); // Используем верхнеуровневую регистрацию маршрутов
 
-// apps.MapControllerRoute(
-//     name: "download",
-//     pattern: "download",
-//     defaults: new { controller = "Accounts", action = "DownloadPdf" });
+app.MapControllerRoute(
+    name: "download",
+    pattern: "download",
+    defaults: new { controller = "Accounts", action = "DownloadPdf" });
 
 app.Run();
