@@ -1,0 +1,72 @@
+﻿@model HeadHunterVer1._0.ViewModels.EditAccountProfileViewModels
+
+@{
+    ViewBag.Title = "Страница изменения данных";
+    Layout = "_Layout";
+}
+
+
+<div>
+    <form asp-action="EditProfile" method="post" asp-antiforgery="true" enctype="multipart/form-data">
+      @if (TempData["Error"] != null)
+      {
+          <div class="alert alert-danger">@TempData["Error"]</div>
+      }
+      <div asp-validation-summary="ModelOnly" class="alert-danger alert text-danger"></div>
+      
+      <link rel="stylesheet" href="~/css/RegisterPage.css" asp-append-version="true"/>
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <meta charset="utf-8">
+          <title>Страница изменения данных </title>
+      </head>
+      <body>
+      <div class="container-register">
+          <h1>Редактирование профиля в HeadHunter</h1>
+              <div class="form-group">
+              </div>
+              <div class="form-group">
+                  <label>Выберите роль:</label><br>
+                  <input type="radio" asp-for="Role" value="employer" onclick="toggleNicknameField(true)"> Работодатель<br>
+                  <input type="radio" asp-for="Role" value="employee" onclick="toggleNicknameField(false)"> Работник<br>
+              </div>
+              <div class="form-group">
+                  <label id="nicknameLabel" asp-for="NameCompanyOrUser"></label>
+                  <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser">
+                  <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
+              </div>
+      
+              <div class="form-group">
+                  <label asp-for="Email">Электронная почта:</label>
+                  <input type="email"  asp-for="Email">
+                  <span asp-validation-for="Email" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+      
+                  <label asp-for="NewPassword">Новый пароль:</label>
+                  <input type="password" asp-for="NewPassword">
+                  <span asp-validation-for="NewPassword" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+                  <label asp-for="OldPassword">Старый Пароль:</label>
+                  <input type="password" asp-for="OldPassword">
+                  <span asp-validation-for="OldPassword" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+                  <label asp-for="AvatarFile">Загрузите фото</label>
+                  <input type="file" asp-for="AvatarFile">
+                  <span asp-validation-for="AvatarFile" class="text-danger"></span>
+              </div>
+              <button type="submit">Редактировать</button>
+              <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+          <p class="bottom-text">
+              <a asp-action="Login" asp-controller="Accounts" class="text-black" type="submit">Войти в другой аккаунт</a>
+          </p>
+      </div>
+      </body>
+      </html>
+    </form>
+</div>

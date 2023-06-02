@@ -36,6 +36,47 @@ public class AccountsController : Controller
     }
 
  
+    public async Task<IActionResult> DownloadPdf(string id)
+    {
+        try
+        {
+            return File( await _fileService.GeneratePdfAsync(id, HttpContext.User), 
+                _fileService.ContentTypeFile(), _fileService.GeneratePdfFileName(id));
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Произошла ошибка при скачивание файла");
+        }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> EditProfile(string id)
+    {
+        var data = await _userService.UserSearchAsync(id, HttpContext.User);
+        return data != null ? View(await _accountExtensions.EditAccountProfileExtensions(data)) : NotFound();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditProfile(EditAccountProfileViewModels model, string id, string? imageUrl, string role)
+    {
+        try
+        {
+            imageUrl = model.AvatarFile != null ? Url.Content($"/images/{await _fileService.FileEditAsync(model)}") : imageUrl;
+            var checkIdentityResult =   await _accountService.Edit(model, id, HttpContext.User, imageUrl);
+            if (!checkIdentityResult.Succeeded)
+            {
+                foreach (var error in checkIdentityResult.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+                return View(model);
+            }
+            role = HttpContext.User.IsInRole("employer") ? "Employer" : HttpContext.User.IsInRole("employee") ? "Employee" : throw new ArgumentOutOfRangeException("произошла ошибка при изменение данных");
+            return RedirectToAction("AboutProfile", role, new { Id = id });
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Произошла ошибка при изменение данных {e}");
+        }
+    }
     
      
     [HttpGet]
