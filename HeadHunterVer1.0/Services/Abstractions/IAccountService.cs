@@ -8,4 +8,13 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 public interface IAccountService
 {
     Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user);
- }
+    Task<IdentityResult> Edit(EditAccountProfileViewModels model, string id, ClaimsPrincipal user, string? image);
+    
+    public  Task<SignInResult> LoginUserAsync(LoginViewModel model);
+    public Task SignOutUserAsync();
+    public Task<bool> IsUserExistsAsync(LoginViewModel email);
+    public Task<bool> CheckUserPasswordAsync(LoginViewModel model, string password);
+    
+    public Task<IdentityResult> RegisterUserAsync(RegisterViewModel model, string ImgPath);
+
+}
