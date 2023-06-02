@@ -49,4 +49,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\images\ef7efed9-df4d-4a99-938d-76de51ea52bd.png" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Remove="Views\Accounts\AboutProfile.cshtml" />
+    </ItemGroup>
+
 </Project>
