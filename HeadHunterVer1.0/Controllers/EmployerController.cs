@@ -37,6 +37,15 @@ public class EmployerController : Controller
         _categoryService = categoryService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Create(string id) => 
+        View(  _mapTo.MapToCategoryViewModel( await _categoryService.GetAllCategoryListAsync()));
     
+    [HttpPost]
+    public async Task<IActionResult> Create(VacancyJobsCreateViewModel model)
+    {
+        await _employerService.CreateVacancyAsync(model, HttpContext.User);
+        return RedirectToAction("AboutProfile");
+    }
   
 }
