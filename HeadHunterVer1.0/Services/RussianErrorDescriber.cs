@@ -9,7 +9,7 @@ public class RussianErrorDescriber : IdentityErrorDescriber
         return new IdentityError()
         {
             Code = nameof(DuplicateEmail),
-            Description = $"Этот email уже занят. Используйте другой: {email}."
+            Description = $"Этот email {email} уже занят . Используйте другой."
         };
     }
 
@@ -18,7 +18,15 @@ public class RussianErrorDescriber : IdentityErrorDescriber
         return new IdentityError()
         {
             Code = nameof(DuplicateUserName),
-            Description = $"Это Имя пользователя уже занято. Используйте другой: {userName}."
+            Description = $"Это Имя пользователя {userName} уже занято. Используйте другой."
+        };    }
+
+    public override IdentityError PasswordMismatch()
+    {
+        return new IdentityError()
+        {
+            Code = nameof(PasswordMismatch),
+            Description = $"Ваш старый пароль не подходит введите правильный старый пароль. После же новый который будет соотвествовать требованиям"
         };    }
 
     public override IdentityError PasswordTooShort(int length)
