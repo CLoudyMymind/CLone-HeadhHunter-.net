@@ -22,7 +22,31 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Views\PartialView\" />
       <Folder Include="wwwroot\StandartPhoto\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\images\18cae97f-231b-47df-8378-258161c4aae3.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\245c3d1c-3c5b-4e02-b625-795eb2611ee1.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\3e96dfb3-4d3d-4b88-b31a-8af9b9eb7189.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\3feae6d5-2ada-4e87-abe7-3f64e26ea6c2.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\72cb8276-698d-4ead-871d-2b707e0d7030.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\749cb89a-62b6-4a4b-a758-d42524dda30e.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\7ea69ec5-9b65-4704-9c4e-cafaeb183e0c.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\82803c4c-0778-42b8-9d69-2f90a9be833b.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\94eac96c-c3cc-4f24-b8d8-b1e7d50c8ee7.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\95cf36f9-3005-43c8-b856-7b51270f4b84.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\9a7de9a0-4288-44f6-b378-3c0047c50cda.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\a0e86010-c64c-4eed-8254-13871808a3eb.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\a603bace-51d0-446d-8e5a-bd64b863e385.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\a7a38b21-cdd3-4655-890a-944e116fc1ca.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\bae88e76-e8fe-4a99-b68f-9995a465b282.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\c769d3d6-c43f-494a-aa96-fd42fdb066cb.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\c93879cf-c0e1-4a91-a65f-27880b4382da.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\ccbfcb75-4d1e-4541-8bc4-560d0f25ef5b.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\ccd9dc52-e84b-4f25-80f3-b447bc8acf92.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\ef7efed9-df4d-4a99-938d-76de51ea52bd.png" />
     </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System;
 using HeadHunterVer1._0.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunterVer1._0.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    partial class HeadHunterContextModelSnapshot : ModelSnapshot
+    [Migration("20230531063022_InitialModelCategoryOrVacancy")]
+    partial class InitialModelCategoryOrVacancy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
