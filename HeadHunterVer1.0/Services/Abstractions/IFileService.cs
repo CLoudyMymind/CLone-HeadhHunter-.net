@@ -13,5 +13,11 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 public interface IFileService
 {
     Task<string> FileRegisterCheckAsync(RegisterViewModel model);
+    Task<string> FileEditAsync(EditAccountProfileViewModels model);
 
+    Task<byte[]> GeneratePdfAsync(string id, ClaimsPrincipal user);
+
+    string ContentTypeFile();
+
+    string GeneratePdfFileName(string id);
 }
