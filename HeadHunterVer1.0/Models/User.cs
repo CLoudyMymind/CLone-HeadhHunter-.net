@@ -5,7 +5,5 @@ namespace HeadHunterVer1._0.Models;
 
 public class User : IdentityUser
 {
-    
     public string PathFile { get; set; }
-    
 }
