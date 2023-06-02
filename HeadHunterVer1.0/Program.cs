@@ -93,7 +93,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Logins}/{action=Login}/{id?}");
+    pattern: "{controller=Accounts}/{action=Login}/{id?}");
 app.MapControllers(); // Используем верхнеуровневую регистрацию маршрутов
 
 app.MapControllerRoute(

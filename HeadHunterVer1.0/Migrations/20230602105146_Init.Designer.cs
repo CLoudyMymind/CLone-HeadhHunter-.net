@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunterVer1._0.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20230531063022_InitialModelCategoryOrVacancy")]
-    partial class InitialModelCategoryOrVacancy
+    [Migration("20230602105146_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,32 @@ namespace HeadHunterVer1._0.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EducatedPost")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ResumeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResumeId");
+
+                    b.ToTable("Courses");
+                });
+
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employer.Vacancy", b =>
                 {
                     b.Property<string>("Id")
@@ -57,7 +83,7 @@ namespace HeadHunterVer1._0.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("UpdateVacancyBid")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -73,6 +99,58 @@ namespace HeadHunterVer1._0.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Vacancies");
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Resume", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ExpectedSalary")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FacebookLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkedInLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NameOfResume")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TelegramLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Resumes");
                 });
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.User", b =>
@@ -141,6 +219,39 @@ namespace HeadHunterVer1._0.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.WorkExperience", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Post")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Responsibilities")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ResumeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YearsOfWork")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResumeId");
+
+                    b.ToTable("WorkExperiences");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -275,6 +386,13 @@ namespace HeadHunterVer1._0.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Course", b =>
+                {
+                    b.HasOne("HeadHunterVer1._0.Models.Resume", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("ResumeId");
+                });
+
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employer.Vacancy", b =>
                 {
                     b.HasOne("HeadHunterVer1._0.Models.Category", "Category")
@@ -290,6 +408,32 @@ namespace HeadHunterVer1._0.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Resume", b =>
+                {
+                    b.HasOne("HeadHunterVer1._0.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeadHunterVer1._0.Models.User", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.WorkExperience", b =>
+                {
+                    b.HasOne("HeadHunterVer1._0.Models.Resume", null)
+                        .WithMany("WorkExperiences")
+                        .HasForeignKey("ResumeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -341,6 +485,13 @@ namespace HeadHunterVer1._0.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Resume", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("WorkExperiences");
                 });
 #pragma warning restore 612, 618
         }
