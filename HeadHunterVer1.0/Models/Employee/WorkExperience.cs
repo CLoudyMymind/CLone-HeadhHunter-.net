@@ -1,4 +1,4 @@
-﻿namespace HeadHunterVer1._0.Models;
+﻿namespace HeadHunterVer1._0.Models.Employee;
 
 public class WorkExperience
 {
