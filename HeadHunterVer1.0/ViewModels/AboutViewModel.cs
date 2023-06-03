@@ -3,11 +3,7 @@
 public class AboutViewModel
 {
     public string PathFile { get; set; }
-
     public string NameCompanyOrUser { get; set; }
-
     public string Email { get; set; }
-
     public string Role { get; set; }
-
 }
