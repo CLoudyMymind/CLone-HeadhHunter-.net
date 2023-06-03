@@ -9,8 +9,6 @@ public class VacancyViewModel
     public decimal Wages { get; set; }
 
     public bool IsPublished { get; set; }
-
-    public List<CategoryViewModel> CategoryViewModels { get; set; }
     public int? ExperienceYearsFrom { get; set; }
     
     public int? ExperienceYearsTo { get; set; }
@@ -19,4 +17,5 @@ public class VacancyViewModel
     public string Description { get; set; }
     public string Title { get; set; }
     public string SelectedCategoryName { get; set; }
+
 }

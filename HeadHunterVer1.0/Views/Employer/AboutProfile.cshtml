@@ -7,7 +7,9 @@
     ViewBag.Title = "Личный кабинет";
     Layout = "_Layout";
 }
-
+@if (@Model.userId == UserManager.GetUserId(User))
+{
+    
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger">@TempData["Error"]</div>
@@ -41,10 +43,11 @@
 <div class="row">
     @foreach (var data in @Model.VacancyViewModels)
     {
-        <div class="col-md-3">
+     
+            <div class="col-md-3">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title"><a>@data.Title</a></h5>
+                    <h5 class="card-title"><a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a></h5>
                     <p class="card-text">Wages: @data.Wages</p>
                     <p class="card-text">Experience To: @data.ExperienceYearsTo</p>
                     <p class="card-text">Experience From: @data.ExperienceYearsFrom</p>
@@ -52,5 +55,11 @@
                 </div>
             </div>
         </div>
+        
     }
 </div>
+}
+else
+{
+    <p>Вы пытаетесь перйти в чужой ЛК </p>
+}

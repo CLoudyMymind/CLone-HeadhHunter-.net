@@ -12,8 +12,6 @@ namespace HeadHunterVer1._0.Controllers;
 /// Вся логика действий с работодателем
 /// </summary>
 ///
-[Authorize(Roles = "employer")]
-[CustomExceptionFilter]
 
 public class EmployerController : Controller
 {
@@ -46,6 +44,14 @@ public class EmployerController : Controller
     {
         await _employerService.CreateVacancyAsync(model, HttpContext.User);
         return RedirectToAction("AboutProfile");
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> AboutVacancy(string id)
+    {
+        if (HttpContext.User.IsInRole("employer"))
+            return View(await _employerService.AboutVacancy(id, HttpContext.User));
+        return NotFound();
     }
   
 }

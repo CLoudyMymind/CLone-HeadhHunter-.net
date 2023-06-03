@@ -7,7 +7,9 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 public interface IEmployerService
 {
     public Task CreateVacancyAsync(VacancyJobsCreateViewModel model, ClaimsPrincipal user);
-    Task<List<VacancyViewModel>> GetALlVacancyAsync();
+    Task<List<VacancyViewModel>> GetALlVacancyAsync(ClaimsPrincipal user);
+    Task<VacancyViewModel> AboutVacancy(string id, ClaimsPrincipal user);
+    public Task<Vacancy> GetByIdVacancy(string id , ClaimsPrincipal user);
 
 
 }

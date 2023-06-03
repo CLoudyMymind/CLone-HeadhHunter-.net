@@ -32,15 +32,15 @@ public class EmployerService : IEmployerService
     {
         var loggedInUser = await _userManager.GetUserAsync(user);
         _ = loggedInUser != null
-            ? (await _headHunterContext.Vacancies.AddAsync(_mapTo.MapToVacancy(model, loggedInUser.Id)), await _headHunterContext.SaveChangesAsync())
+            ? (await _headHunterContext.Vacancies.AddAsync(_mapTo.MapToVacancyCreate(model, loggedInUser.Id)), await _headHunterContext.SaveChangesAsync())
             : throw new Exception("Произошла ошибка при создании задачи");
     }
 
-    public async Task<List<VacancyViewModel>> GetALlVacancyAsync()
+    public async Task<List<VacancyViewModel>> GetALlVacancyAsync(ClaimsPrincipal user)
     {
+        var dataUser = _userManager.GetUserId(user);
         var vacancyViewModels = await _headHunterContext.Vacancies
-            .Include(v => v.Category) 
-            .Select(v => new VacancyViewModel
+            .Include(v => v.Category).Where(v => v.UserId == dataUser).Select(v => new VacancyViewModel
         {
             Title = v.Title,
             Description = v.Description,
@@ -54,4 +54,16 @@ public class EmployerService : IEmployerService
         }).ToListAsync();
         return vacancyViewModels;
     }
+
+    public async Task<Vacancy> GetByIdVacancy(string? id, ClaimsPrincipal user)
+    {
+          var  data = await _headHunterContext.Vacancies.Include(c => c.Category).Where(v => v.UserId == _userManager.GetUserId(user)).FirstOrDefaultAsync(v => v.Id == id);
+          Console.WriteLine(data);
+          return data;
+    }
+
+    public async Task<VacancyViewModel> AboutVacancy(string id , ClaimsPrincipal user )=> 
+        _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancy(id, user));
+
+    
 }

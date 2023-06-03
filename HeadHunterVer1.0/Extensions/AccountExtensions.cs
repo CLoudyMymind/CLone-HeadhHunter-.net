@@ -38,7 +38,8 @@ namespace HeadHunterVer1._0.Extensions
                 PathFile = pathFile,
                 Email = user.Email,
                 NameCompanyOrUser = user.UserName,
-                Role = role
+                Role = role,
+                userId = userData.Id
             };
             if (vacancyViewModel != null)
                 aboutViewModel.VacancyViewModels = vacancyViewModel;

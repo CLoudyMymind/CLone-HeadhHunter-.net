@@ -52,7 +52,7 @@ public class AccountService : IAccountService
         var userData = await _userService.UserSearchAsync(id, user);
         if (userData == null) throw new Exception("Произошла ошибка, обратитесь в поддержку");
         if (user.IsInRole("employer"))
-            return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyAsync());
+            return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyAsync(user));
         if (user.IsInRole("employee"))
             return await _accountExtensions.EmployeeAboutViewModelExtensions(userData, userData.PathFile, userData);
         throw new Exception("Произошла ошибка, обратитесь в поддержку");
@@ -87,11 +87,7 @@ public class AccountService : IAccountService
 
     public async Task<bool> IsUserExistsAsync(LoginViewModel model)
     {
-        var user = await _userManager.FindByNameAsync(model.Name)
-                   ?? await _userManager.FindByEmailAsync(model.Name)
-                   ?? await _userService.CheckPhoneNumber(model.Name);
-
-
+        var user = await _userManager.FindByNameAsync(model.Name) ?? await _userManager.FindByEmailAsync(model.Name) ?? await _userService.CheckPhoneNumber(model.Name);
         return user != null;
     }
 
