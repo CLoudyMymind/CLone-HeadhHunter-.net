@@ -16,7 +16,11 @@
         <input type="text" class="form-control" asp-for="NameOfVacancy" id="nameOfVacancy" placeholder="Введите название должности">
         <span asp-validation-for="NameOfVacancy" class="text-danger"></span>
     </div>
-
+        <div class="mb-3">
+                <label class="fw-bold" asp-for="Description">описание должности:</label>
+                <input type="text" class="form-control" asp-for="Description" id="nameOfVacancy" placeholder="Введите название должности">
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
     <div class="mb-3">
         <label class="fw-bold" asp-for="Wages">Заработная плата:</label>
         <input type="number" class="form-control" asp-for="Wages" id="wages" placeholder="Введите заработную плату">

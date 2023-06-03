@@ -14,11 +14,13 @@ public class MapTo
         {
             Id = Guid.NewGuid().ToString(),
             CategoryId = model.CategoryId,
+            Description = model.Description,
             ExperienceYearsFrom = model.ExperienceYearsFrom,
             ExperienceYearsTo = model.ExperienceYearsTo,
             IsPublished = model.IsPublished,
             Wages = model.Wages,
             UserId = id,
+            Title = model.NameOfVacancy,
             UpdateVacancyBid = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("F"))
         };
         return newVacancy;
@@ -34,6 +36,5 @@ public class MapTo
     }
     public  VacancyJobsCreateViewModel MapToCategoryViewModel(List<CategoryViewModel> model) => new() { CategoryViewModels = model};
     
-
 
 }

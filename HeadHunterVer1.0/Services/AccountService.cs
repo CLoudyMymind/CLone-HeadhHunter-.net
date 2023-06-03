@@ -13,14 +13,16 @@ public class AccountService : IAccountService
     private readonly IUserService _userService;
     private readonly SignInManager<User> _signInManager;
     private readonly AccountExtensions _accountExtensions;
+    private readonly IEmployerService _employerService;
 
     public AccountService(UserManager<User> userManager, IUserService userService, AccountExtensions accountExtensions,
-        SignInManager<User> signInManager)
+        SignInManager<User> signInManager, IEmployerService employerService)
     {
         _userManager = userManager;
         _userService = userService;
         _accountExtensions = accountExtensions;
         _signInManager = signInManager;
+        _employerService = employerService;
     }
 
     public async Task<IdentityResult> Edit(EditAccountProfileViewModels model, string id, ClaimsPrincipal user,
@@ -48,10 +50,14 @@ public class AccountService : IAccountService
     public async Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user)
     {
         var userData = await _userService.UserSearchAsync(id, user);
-        if (userData != null)
-            return await _accountExtensions.CreateAboutViewModelExtensions(userData, userData.PathFile, userData);
-        throw new Exception("Произошла ошибка обратите в поддержку)");
+        if (userData == null) throw new Exception("Произошла ошибка, обратитесь в поддержку");
+        if (user.IsInRole("employer"))
+            return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyAsync());
+        if (user.IsInRole("employee"))
+            return await _accountExtensions.EmployeeAboutViewModelExtensions(userData, userData.PathFile, userData);
+        throw new Exception("Произошла ошибка, обратитесь в поддержку");
     }
+
 
     public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
     {

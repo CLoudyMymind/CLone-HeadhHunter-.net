@@ -18,4 +18,6 @@ public class CategoryService : ICategoryService
     }
     public async Task<List<CategoryViewModel>> GetAllCategoryListAsync() =>
         _mapTo.MapToListCategories(await _db.Categories.ToListAsync());
+
+    public List<CategoryViewModel> GetAllCategoryList() => _mapTo.MapToListCategories(_db.Categories.ToList());
 }

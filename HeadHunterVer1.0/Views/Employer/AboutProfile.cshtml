@@ -30,9 +30,27 @@
                         <strong>Роль:</strong> @Model.Role
                     </p>
                 </div>
+                <a class="btn btn-outline-success" asp-area="" asp-controller="Accounts" asp-action="DownloadPdf" asp-route-id="@UserManager.GetUserId(User)">Скачать данные</a>
+                        <a asp-action="EditProfile" asp-controller="Accounts" asp-route-id="@UserManager.GetUserId(User)" class="btn-outline-success btn">Редактировать профиль</a>
+                        <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" methods="get" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
             </div>
         </div>
     </div>
 </div>
-<a class="btn btn-outline-success" asp-area="" asp-controller="Accounts" asp-action="DownloadPdf" asp-route-id="@UserManager.GetUserId(User)">Скачать данные</a>
-<a asp-action="EditProfile" asp-controller="Accounts" asp-route-id="@UserManager.GetUserId(User)" class="btn-outline-success btn">Редактировать профиль</a>
+
+<div class="row">
+    @foreach (var data in @Model.VacancyViewModels)
+    {
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><a>@data.Title</a></h5>
+                    <p class="card-text">Wages: @data.Wages</p>
+                    <p class="card-text">Experience To: @data.ExperienceYearsTo</p>
+                    <p class="card-text">Experience From: @data.ExperienceYearsFrom</p>
+                    <p class="card-text">Selected Category: @data.SelectedCategoryName</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

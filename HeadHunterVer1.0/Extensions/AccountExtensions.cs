@@ -14,18 +14,38 @@ namespace HeadHunterVer1._0.Extensions
             _userManager = userManager;
         }
 
-        public async Task<AboutViewModel> CreateAboutViewModelExtensions(IdentityUser user, string pathFile, User userData)
+        public async Task<AboutViewModel> EmployeeAboutViewModelExtensions(IdentityUser user, string pathFile, User userData)
         {
             var roles = await _userManager.GetRolesAsync(userData);
             var role = roles.FirstOrDefault(); 
-            return new AboutViewModel
+
+            var aboutViewModel = new AboutViewModel
             {
                 PathFile = pathFile,
                 Email = user.Email,
                 NameCompanyOrUser = user.UserName,
                 Role = role
             };
+            return aboutViewModel;
         }
+        public async Task<AboutViewModel> EmployerAboutViewModelExtensions(IdentityUser user, string pathFile, User userData, List<VacancyViewModel>? vacancyViewModel)
+        {
+            var roles = await _userManager.GetRolesAsync(userData);
+            var role = roles.FirstOrDefault(); 
+
+            var aboutViewModel = new AboutViewModel
+            {
+                PathFile = pathFile,
+                Email = user.Email,
+                NameCompanyOrUser = user.UserName,
+                Role = role
+            };
+            if (vacancyViewModel != null)
+                aboutViewModel.VacancyViewModels = vacancyViewModel;
+            return aboutViewModel;
+        }
+
+
 
 
         public User UserModelExtensions(RegisterViewModel model, string imgPath)

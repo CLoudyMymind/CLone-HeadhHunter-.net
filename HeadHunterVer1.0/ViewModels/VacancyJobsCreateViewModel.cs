@@ -12,6 +12,7 @@ public class VacancyJobsCreateViewModel
 
     public bool IsPublished { get; set; }
 
+    public string Description { get; set; }
     public List<CategoryViewModel>? CategoryViewModels { get; set; }
 
     public int? ExperienceYearsFrom { get; set; }

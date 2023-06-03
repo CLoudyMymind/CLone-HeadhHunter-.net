@@ -30,13 +30,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Employer" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
                             </li>
                         }
-                        @if (User.IsInRole("employee"))
-                        {
-                            <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
-                            </li>
-                        }
-
                         <li class="nav-item">
                             <p class="fst-italic fs-4 ms-5">Добро пожаловать: @User.Identity.Name</p>
                         </li>
