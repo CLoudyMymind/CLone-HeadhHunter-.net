@@ -10,6 +10,7 @@ public interface IEmployerService
     Task<List<VacancyViewModel>> GetALlVacancyAsync(ClaimsPrincipal user);
     Task<VacancyViewModel> AboutVacancy(string id, ClaimsPrincipal user);
     public Task<Vacancy> GetByIdVacancy(string id , ClaimsPrincipal user);
+    Task UpdateDate(string id, ClaimsPrincipal user);
 
 
 }

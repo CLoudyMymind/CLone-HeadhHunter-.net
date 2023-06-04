@@ -53,5 +53,13 @@ public class EmployerController : Controller
             return View(await _employerService.AboutVacancy(id, HttpContext.User));
         return NotFound();
     }
-  
+
+    [HttpGet]
+    public async Task<IActionResult> UpdateVacancyDatePublished(string id)
+    {
+        if (!HttpContext.User.IsInRole("employer")) return NotFound();
+        await _employerService.UpdateDate(id, HttpContext.User);
+        return RedirectToAction("AboutProfile");
+
+    }
 }

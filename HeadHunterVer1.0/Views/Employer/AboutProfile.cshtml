@@ -7,9 +7,8 @@
     ViewBag.Title = "Личный кабинет";
     Layout = "_Layout";
 }
-@if (@Model.userId == UserManager.GetUserId(User))
-{
-    
+
+
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger">@TempData["Error"]</div>
@@ -33,33 +32,83 @@
                     </p>
                 </div>
                 <a class="btn btn-outline-success" asp-area="" asp-controller="Accounts" asp-action="DownloadPdf" asp-route-id="@UserManager.GetUserId(User)">Скачать данные</a>
-                        <a asp-action="EditProfile" asp-controller="Accounts" asp-route-id="@UserManager.GetUserId(User)" class="btn-outline-success btn">Редактировать профиль</a>
-                        <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" methods="get" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
+                <a asp-action="EditProfile" asp-controller="Accounts" asp-route-id="@UserManager.GetUserId(User)" class="btn-outline-success btn">Редактировать профиль</a>
+                <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" methods="get" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
             </div>
         </div>
     </div>
 </div>
-
-<div class="row">
-    @foreach (var data in @Model.VacancyViewModels)
-    {
-     
-            <div class="col-md-3">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title"><a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a></h5>
-                    <p class="card-text">Wages: @data.Wages</p>
-                    <p class="card-text">Experience To: @data.ExperienceYearsTo</p>
-                    <p class="card-text">Experience From: @data.ExperienceYearsFrom</p>
-                    <p class="card-text">Selected Category: @data.SelectedCategoryName</p>
-                </div>
-            </div>
-        </div>
-        
-    }
-</div>
-}
-else
+@if (Model.userId == UserManager.GetUserId(User))
 {
-    <p>Вы пытаетесь перйти в чужой ЛК </p>
+    <div class="row mt-5">
+        @foreach (var data in Model.VacancyViewModels)
+        {
+            if (data.IsPublished)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a>
+                            </h5>
+                            <p class="card-text">Зарплата: @data.Wages</p>
+                            <p class="card-text">Опыт работы от: @data.ExperienceYearsTo</p>
+                            <p class="card-text">Опыт работы до: @data.ExperienceYearsFrom</p>
+                            <p class="card-text">Последние обновление: @data.UpdateVacancyBid</p>
+                            <p class="card-text">
+                                Опубликовано:
+                                @if (data.IsPublished == false)
+                                {
+                                    <span>Нет</span>
+                                }
+                                else
+                                {
+                                    <span>Да</span>
+                                }
+                            </p>
+                        </div>
+                           <a class="btn btn-outline-success" > Снять с публикации</a>
+                        <a class="btn btn-outline-success" asp-action="UpdateVacancyDatePublished" asp-controller="Employer" asp-route-id="@data.Id">обновить публикацию</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+@if (Model.userId == UserManager.GetUserId(User))
+{
+    <div class="row d-none mt-5">
+        @foreach (var data in Model.VacancyViewModels)
+        {
+            if (data.IsPublished == false)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a>
+                            </h5>
+                            <p class="card-text">Зарплата: @data.Wages</p>
+                            <p class="card-text">Опыт работы от: @data.ExperienceYearsTo</p>
+                            <p class="card-text">Опыт работы до: @data.ExperienceYearsFrom</p>
+                            <p class="card-text">Последние обновление: @data.UpdateVacancyBid</p>
+                            <p class="card-text">
+                                Опубликовано:
+                                @if (data.IsPublished == false)
+                                {
+                                    <span>Нет</span>
+                                }
+                                else
+                                {
+                                    <span>Да</span>
+                                }
+                            </p>
+                        </div>
+                        <a class="btn btn-outline-success">Снять с публикации</a>
+                        <a class="btn btn-outline-success">обновить публикацию</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 }

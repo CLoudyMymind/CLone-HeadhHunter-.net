@@ -15,16 +15,14 @@ public class EmployerService : IEmployerService
     private readonly HeadHunterContext _headHunterContext;
     private readonly UserManager<User> _userManager;
     private readonly MapTo _mapTo;
-    private readonly ICategoryService _categoryService;
    
 
     public EmployerService(HeadHunterContext headHunterContext, 
-        UserManager<User> userManager, MapTo mapTo, ICategoryService categoryService)
+        UserManager<User> userManager, MapTo mapTo)
     {
         _headHunterContext = headHunterContext;
         _userManager = userManager;
         _mapTo = mapTo;
-        _categoryService = categoryService;
         
     }
 
@@ -40,7 +38,7 @@ public class EmployerService : IEmployerService
     {
         var dataUser = _userManager.GetUserId(user);
         var vacancyViewModels = await _headHunterContext.Vacancies
-            .Include(v => v.Category).Where(v => v.UserId == dataUser).Select(v => new VacancyViewModel
+            .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Where(v => v.UserId == dataUser).Select(v => new VacancyViewModel
         {
             Title = v.Title,
             Description = v.Description,
@@ -57,9 +55,18 @@ public class EmployerService : IEmployerService
 
     public async Task<Vacancy> GetByIdVacancy(string? id, ClaimsPrincipal user)
     {
-          var  data = await _headHunterContext.Vacancies.Include(c => c.Category).Where(v => v.UserId == _userManager.GetUserId(user)).FirstOrDefaultAsync(v => v.Id == id);
-          Console.WriteLine(data);
-          return data;
+        return  await _headHunterContext.Vacancies.Include(c => c.Category).OrderByDescending(v => v.UpdateVacancyBid)
+            .Where(v => v.UserId == _userManager.GetUserId(user)).FirstOrDefaultAsync(v => v.Id == id)
+                 ?? throw new Exception("Такой ваканси нету в бд");
+        
+    }
+
+    public async Task UpdateDate(string id , ClaimsPrincipal user)
+    {
+      var data = await GetByIdVacancy(id, user);
+      data.UpdateVacancyBid = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("F"));
+      _headHunterContext.Vacancies.Update(data);
+      await _headHunterContext.SaveChangesAsync();
     }
 
     public async Task<VacancyViewModel> AboutVacancy(string id , ClaimsPrincipal user )=> 
