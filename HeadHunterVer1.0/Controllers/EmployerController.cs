@@ -62,4 +62,20 @@ public class EmployerController : Controller
         return RedirectToAction("AboutProfile");
 
     }
+    [HttpGet]
+    public async Task<IActionResult> UnPublish(string id)
+    {
+        if (!HttpContext.User.IsInRole("employer")) return NotFound();
+        await _employerService.UnPublish(id, HttpContext.User);
+        return RedirectToAction("AboutProfile");
+
+    }
+    [HttpGet]
+    public async Task<IActionResult> Publish(string id)
+    {
+        if (!HttpContext.User.IsInRole("employer")) return NotFound();
+        await _employerService.Publish(id, HttpContext.User);
+        return RedirectToAction("AboutProfile");
+
+    }
 }

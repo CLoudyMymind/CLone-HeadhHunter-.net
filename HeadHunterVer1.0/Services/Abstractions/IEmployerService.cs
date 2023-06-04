@@ -11,6 +11,7 @@ public interface IEmployerService
     Task<VacancyViewModel> AboutVacancy(string id, ClaimsPrincipal user);
     public Task<Vacancy> GetByIdVacancy(string id , ClaimsPrincipal user);
     Task UpdateDate(string id, ClaimsPrincipal user);
-
+    Task UnPublish(string id, ClaimsPrincipal user);
+    Task Publish(string id, ClaimsPrincipal user);
 
 }

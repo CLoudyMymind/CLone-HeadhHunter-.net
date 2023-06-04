@@ -72,5 +72,18 @@ public class EmployerService : IEmployerService
     public async Task<VacancyViewModel> AboutVacancy(string id , ClaimsPrincipal user )=> 
         _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancy(id, user));
 
-    
+    public async Task UnPublish(string id , ClaimsPrincipal user)
+    {
+        var data = await GetByIdVacancy(id, user);
+        data.IsPublished = false;
+        _headHunterContext.Vacancies.Update(data);
+        await _headHunterContext.SaveChangesAsync();
+    }
+    public async Task Publish(string id , ClaimsPrincipal user)
+    {
+        var data = await GetByIdVacancy(id, user);
+        data.IsPublished = true;
+        _headHunterContext.Vacancies.Update(data);
+        await _headHunterContext.SaveChangesAsync();
+    }
 }
