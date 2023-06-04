@@ -38,18 +38,8 @@ public class EmployerService : IEmployerService
     {
         var dataUser = _userManager.GetUserId(user);
         var vacancyViewModels = await _headHunterContext.Vacancies
-            .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Where(v => v.UserId == dataUser).Select(v => new VacancyViewModel
-        {
-            Title = v.Title,
-            Description = v.Description,
-            ExperienceYearsTo = v.ExperienceYearsTo,
-            ExperienceYearsFrom = v.ExperienceYearsFrom,
-            Wages = v.Wages,
-            UpdateVacancyBid = v.UpdateVacancyBid,
-            Id = v.Id,
-            IsPublished = v.IsPublished,
-            SelectedCategoryName = v.Category.Name 
-        }).ToListAsync();
+            .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Where(v => v.UserId == dataUser)
+            .Select(v => _mapTo.MapVacancyToVacancyViewModel(v)).ToListAsync();
         return vacancyViewModels;
     }
 
@@ -71,19 +61,12 @@ public class EmployerService : IEmployerService
 
     public async Task<VacancyViewModel> AboutVacancy(string id , ClaimsPrincipal user )=> 
         _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancy(id, user));
+    public async Task UpdatePublishStatus(string id, ClaimsPrincipal user, bool isPublished)
+    {
+        var data = await GetByIdVacancy(id, user);
+        data.IsPublished = isPublished;
+        _headHunterContext.Vacancies.Update(data);
+        await _headHunterContext.SaveChangesAsync();
+    }
 
-    public async Task UnPublish(string id , ClaimsPrincipal user)
-    {
-        var data = await GetByIdVacancy(id, user);
-        data.IsPublished = false;
-        _headHunterContext.Vacancies.Update(data);
-        await _headHunterContext.SaveChangesAsync();
-    }
-    public async Task Publish(string id , ClaimsPrincipal user)
-    {
-        var data = await GetByIdVacancy(id, user);
-        data.IsPublished = true;
-        _headHunterContext.Vacancies.Update(data);
-        await _headHunterContext.SaveChangesAsync();
-    }
 }

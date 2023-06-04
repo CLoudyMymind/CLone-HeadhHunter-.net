@@ -40,6 +40,7 @@ public class EmployerController : Controller
         View(  _mapTo.MapToCategoryViewModel( await _categoryService.GetAllCategoryListAsync()));
     
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(VacancyJobsCreateViewModel model)
     {
         await _employerService.CreateVacancyAsync(model, HttpContext.User);
@@ -53,7 +54,6 @@ public class EmployerController : Controller
             return View(await _employerService.AboutVacancy(id, HttpContext.User));
         return NotFound();
     }
-
     [HttpGet]
     public async Task<IActionResult> UpdateVacancyDatePublished(string id)
     {
@@ -66,7 +66,7 @@ public class EmployerController : Controller
     public async Task<IActionResult> UnPublish(string id)
     {
         if (!HttpContext.User.IsInRole("employer")) return NotFound();
-        await _employerService.UnPublish(id, HttpContext.User);
+        await _employerService.UpdatePublishStatus(id, HttpContext.User, false);
         return RedirectToAction("AboutProfile");
 
     }
@@ -74,7 +74,7 @@ public class EmployerController : Controller
     public async Task<IActionResult> Publish(string id)
     {
         if (!HttpContext.User.IsInRole("employer")) return NotFound();
-        await _employerService.Publish(id, HttpContext.User);
+        await _employerService.UpdatePublishStatus(id, HttpContext.User,true);
         return RedirectToAction("AboutProfile");
 
     }
