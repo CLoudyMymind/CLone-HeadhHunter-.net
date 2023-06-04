@@ -10,8 +10,8 @@ public class Resume
     public string TelegramLink { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
-    public string FacebookLink { get; set; }
-    public string LinkedInLink { get; set; }
+    public string? FacebookLink { get; set; }
+    public string? LinkedInLink { get; set; }
     public string CategoryId { get; set; }
     public Category Category { get; set; }
     public List<WorkExperience> WorkExperiences { get; set; }
