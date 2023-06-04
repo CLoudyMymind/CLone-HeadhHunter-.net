@@ -57,7 +57,7 @@ public class AccountsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditProfile(EditAccountProfileViewModels model, string id, string? imageUrl, string role)
+    public async Task<IActionResult> EditProfile(EditAccountProfileViewModels model, string id, string? imageUrl)
     {
         try
         {
@@ -69,7 +69,7 @@ public class AccountsController : Controller
                     ModelState.AddModelError(string.Empty, error.Description);
                 return View(model);
             }
-            role = HttpContext.User.IsInRole("employer") ? "Employer" : HttpContext.User.IsInRole("employee") ? "Employee" : throw new ArgumentOutOfRangeException("произошла ошибка при изменение данных");
+            var role = HttpContext.User.IsInRole("employer") ? "Employer" : HttpContext.User.IsInRole("employee") ? "Employee" : throw new ArgumentOutOfRangeException("произошла ошибка при изменение данных");
             return RedirectToAction("AboutProfile", role, new { Id = id });
         }
         catch (Exception e)
