@@ -212,6 +212,8 @@ namespace HeadHunterVer1._0.Migrations
                     Wages = table.Column<decimal>(type: "numeric", nullable: false),
                     IsPublished = table.Column<bool>(type: "boolean", nullable: false),
                     CategoryId = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     ExperienceYearsFrom = table.Column<int>(type: "integer", nullable: true),
                     ExperienceYearsTo = table.Column<int>(type: "integer", nullable: true),
                     UpdateVacancyBid = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)

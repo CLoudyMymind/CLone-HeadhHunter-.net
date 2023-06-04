@@ -16,7 +16,6 @@ public class HeadHunterContext : IdentityDbContext<User>
 
     public HeadHunterContext(DbContextOptions<HeadHunterContext> options) : base(options)
     {
-        Database.EnsureCreated();
     }
 
 }
