@@ -37,7 +37,7 @@ public class EmployerController : Controller
 
     [HttpGet]
     public async Task<IActionResult> Create(string id) => 
-        View(  _mapTo.MapToCategoryViewModel( await _categoryService.GetAllCategoryListAsync()));
+        View(_mapTo.MapToCategoryViewModel(await _categoryService.GetAllCategoryListAsync()));
     
     [HttpPost]
     [ValidateAntiForgeryToken]
