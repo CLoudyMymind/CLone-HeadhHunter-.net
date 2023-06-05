@@ -11,4 +11,7 @@ public class AboutViewModel
     public string NewPassword { get; set; }
     public string OldPassword { get; set; }
     public IFormFile AvatarFile { get; set; }
+
+    public string PhoneNumber { get; set; }
+
 }

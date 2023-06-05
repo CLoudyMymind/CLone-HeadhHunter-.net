@@ -49,25 +49,29 @@ public class AccountsController : Controller
         }
     }
     
-    [HttpGet]
-    public async Task<IActionResult> EditProfile(string id)
-    {
-        var data = await _userService.UserSearchAsync(id, HttpContext.User);
-        return data != null ? View(await _accountExtensions.EditAccountProfileExtensions(data)) : NotFound();
-    }
 
     [HttpPost]
     public async Task<IActionResult> EditProfile(EditAccountProfileViewModels model, string id, string? imageUrl)
     {
         try
         {
-            imageUrl = model.AvatarFile != null ? Url.Content($"/images/{await _fileService.FileEditAsync(model)}") : imageUrl;
-            var checkIdentityResult =   await _accountService.Edit(model, id, HttpContext.User, imageUrl);
-            if (!checkIdentityResult.Succeeded)
+            if (ModelState.IsValid)
             {
-                foreach (var error in checkIdentityResult.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
-                return View(model);
+                imageUrl = model.AvatarFile != null ? Url.Content($"/images/{await _fileService.FileEditAsync(model)}") : imageUrl;
+                var checkIdentityResult = await _accountService.Edit(model, id, HttpContext.User, imageUrl);
+                if (!checkIdentityResult.Succeeded)
+                {
+                    foreach (var error in checkIdentityResult.Errors)
+                        TempData["Error"] = error.Description;
+                    return Redirect(Request.Headers["Referer"].ToString());
+                }
+            }
+            else
+            {
+                foreach (var modelStateValue in ModelState.Values)
+                 foreach (var error in modelStateValue.Errors) 
+                     TempData["Error"] = error.ErrorMessage;
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             var role = HttpContext.User.IsInRole("employer") ? "Employer" : HttpContext.User.IsInRole("employee") ? "Employee" : throw new ArgumentOutOfRangeException("произошла ошибка при изменение данных");
             return RedirectToAction("AboutProfile", role, new { Id = id });
@@ -77,6 +81,7 @@ public class AccountsController : Controller
             throw new Exception($"Произошла ошибка при изменение данных {e}");
         }
     }
+
     
      
     [HttpGet]
