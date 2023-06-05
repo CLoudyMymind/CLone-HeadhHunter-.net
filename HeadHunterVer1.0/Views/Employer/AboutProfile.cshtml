@@ -35,7 +35,7 @@
                 </div>
                 <a class="btn btn-outline-success" asp-area="" asp-controller="Accounts" asp-action="DownloadPdf" asp-route-id="@UserManager.GetUserId(User)">Скачать данные</a>
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
-                <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" methods="get" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
+                <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer"  asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
             </div>
         </div>
     </div>
