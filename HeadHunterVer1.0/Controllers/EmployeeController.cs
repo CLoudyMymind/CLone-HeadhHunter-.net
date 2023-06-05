@@ -34,6 +34,7 @@ public class EmployeeController : Controller
     }
     
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateResume(CreateResumeViewModel viewModel)
     {
         return View();
