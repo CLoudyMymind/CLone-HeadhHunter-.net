@@ -35,6 +35,7 @@
 </div>
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
+<a class="btn btn-primary" asp-action="CreateResume">Создать резюме</a>
 
 <form asp-action="EditProfile" asp-controller="Accounts" method="post" asp-antiforgery="true" enctype="multipart/form-data">
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -46,18 +47,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Выберите роль:</label><br>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" asp-for="Role" value="employer" onclick="toggleNicknameField(true)">
-                            <label class="form-check-label">Работодатель</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" asp-for="Role" value="employee" onclick="toggleNicknameField(false)">
-                            <label class="form-check-label">Работник</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="nicknameLabel" asp-for="NameCompanyOrUser"></label>
+                        <label id="nicknameLabel" asp-for="NameCompanyOrUser">Введите имя:</label>
                         <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser" class="form-control">
                         <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
                     </div>
