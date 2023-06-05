@@ -28,6 +28,7 @@ public class AccountService : IAccountService
     public async Task<IdentityResult> Edit(EditAccountProfileViewModels model, string id, ClaimsPrincipal user,
         string? imagePath)
     {
+        
         var userData = await _userService.UserSearchAsync(id, user);
         if (userData is null)
             throw new Exception("Произошла ошибка обратите в поддержку)");
@@ -40,6 +41,19 @@ public class AccountService : IAccountService
         userData.NormalizedEmail =
             !string.IsNullOrEmpty(model.Email) ? model.Email.ToUpper() : userData.NormalizedEmail;
         userData.PathFile = imagePath ?? userData.PathFile;
+        if (!string.IsNullOrEmpty(model.PhoneNumber))
+        {
+            if (model.PhoneNumber != userData.PhoneNumber)
+            {
+                var identityError = new IdentityError
+                {
+                    Code = "DuplicatePhoneNumber",
+                    Description = "Номер который вы вводите уже кем то занят попробуйте другой"
+                };
+                return IdentityResult.Failed(identityError);
+            }
+            userData.PhoneNumber = model.PhoneNumber;
+        }
         if (string.IsNullOrEmpty(model.OldPassword) && string.IsNullOrEmpty(model.NewPassword))
             return await _userManager.UpdateAsync(userData);
         var changePasswordResult =

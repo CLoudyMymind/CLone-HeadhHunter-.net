@@ -32,7 +32,7 @@
                     </p>
                 </div>
                 <a class="btn btn-outline-success" asp-area="" asp-controller="Accounts" asp-action="DownloadPdf" asp-route-id="@UserManager.GetUserId(User)">Скачать данные</a>
-                <a asp-action="EditProfile" asp-controller="Accounts" asp-route-id="@UserManager.GetUserId(User)" class="btn-outline-success btn">Редактировать профиль</a>
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
                 <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" methods="get" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
             </div>
         </div>
@@ -125,3 +125,63 @@
     });
 </script>
 
+
+<form asp-action="EditProfile" asp-controller="Accounts" method="post" asp-antiforgery="true" enctype="multipart/form-data" asp-route-id="@Model.userId">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Окно изменения данных</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Выберите роль:</label><br>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" asp-for="Role" value="employer" onclick="toggleNicknameField(true)">
+                            <label class="form-check-label">Работодатель</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" asp-for="Role" value="employee" onclick="toggleNicknameField(false)">
+                            <label class="form-check-label">Работник</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="nicknameLabel" asp-for="NameCompanyOrUser"></label>
+                        <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser" class="form-control">
+                        <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email">Электронная почта:</label>
+                        <input type="email" asp-for="Email" class="form-control">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewPassword">Новый пароль:</label>
+                        <input type="password" asp-for="NewPassword" class="form-control">
+                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OldPassword">Старый Пароль:</label>
+                        <input type="password" asp-for="OldPassword" class="form-control">
+                        <span asp-validation-for="OldPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AvatarFile">Загрузите фото</label>
+                        <input type="file" asp-for="AvatarFile" class="form-control">
+                        <span asp-validation-for="AvatarFile" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber">Введите номер</label>
+                        <input type="text" asp-for="PhoneNumber" class="form-control">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary" id="saveProfileChanges">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

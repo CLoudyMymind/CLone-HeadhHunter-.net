@@ -18,6 +18,7 @@ public class RegisterViewModel
     
     [DataType(DataType.EmailAddress , ErrorMessage = "тут должен быть только email")]
     [Required(ErrorMessage = "Заполните Email")]
+    [RegularExpression (@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Некорректный адрес")]
     [Display(Name = "Укажите Email адрес")]
     public string Email { get; set; }
     

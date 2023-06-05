@@ -10,7 +10,6 @@ public class EditAccountProfileViewModels
     [AllowedExtensions(new []{".png" , ".jpeg" , ".jpg" , ".webp" , ".ico" , ".svg"})]
     public IFormFile? AvatarFile { get; set; }
     
-    public string? PathToAvatarFile { get; set; }
     
     [DataType(DataType.Text , ErrorMessage = "Тут должен быть только текст")]
     [Display(Name = "Укажите ваше имя")]
@@ -18,6 +17,9 @@ public class EditAccountProfileViewModels
     
     [DataType(DataType.EmailAddress , ErrorMessage = "Тут должен быть только email")]
     [Display(Name = "Укажите Email адрес")]
+    [RegularExpression (@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Некорректный адрес")]
+
+
     public string? Email { get; set; }
     
     [DataType(DataType.Password,ErrorMessage = "Тут должен быть только пароль")]
@@ -27,6 +29,8 @@ public class EditAccountProfileViewModels
     [Display(Name = "Введите пароль")]
     public string? NewPassword { get; set; }
     
-    [Required(ErrorMessage = "Выберете вашу роль")]
     public string?  Role { get; set; }
+    [RegularExpression(@"^(\+7)?(\d{10})$", ErrorMessage = "Номер телефона должен быть в формате +7XXXXXXXXXX.")]
+    [Display(Name = "Введите номер")]
+    public string? PhoneNumber  { get; set; }
 }

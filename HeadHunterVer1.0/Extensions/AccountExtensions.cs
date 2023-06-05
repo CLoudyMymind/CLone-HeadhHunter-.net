@@ -24,7 +24,9 @@ namespace HeadHunterVer1._0.Extensions
                 PathFile = pathFile,
                 Email = user.Email,
                 NameCompanyOrUser = user.UserName,
-                Role = role
+                Role = role,
+                PhoneNumber = user.PhoneNumber,
+
             };
             return aboutViewModel;
         }
@@ -39,7 +41,8 @@ namespace HeadHunterVer1._0.Extensions
                 Email = user.Email,
                 NameCompanyOrUser = user.UserName,
                 Role = role,
-                userId = userData.Id
+                userId = userData.Id,
+                PhoneNumber = user.PhoneNumber,
             };
             if (vacancyViewModel != null)
                 aboutViewModel.VacancyViewModels = vacancyViewModel;
@@ -66,7 +69,7 @@ namespace HeadHunterVer1._0.Extensions
             {
                 NameCompanyOrUser = data.UserName,
                 Email = data.Email,
-                Role = userRoles.FirstOrDefault()
+                Role = userRoles.FirstOrDefault(),
             };
         }
     }
