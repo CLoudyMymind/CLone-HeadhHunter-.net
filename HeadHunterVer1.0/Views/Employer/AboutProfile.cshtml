@@ -11,8 +11,10 @@
 
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">@TempData["Error"]</div>
+    <p class="alert alert-danger">@TempData["Error"]</p>
 }
+    
+
 <div class="container">
     <h1 class="text-black text-center fs-3">Добро пожаловать в личный кабинет</h1>
     <hr>
@@ -114,18 +116,6 @@
         }
     </div>
 }
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var button = document.getElementById('ButtonOpenUnPublishVacancy');
-        var block = document.getElementById('BlockVacancy');
-        button.addEventListener('click', function() {
-            block.classList.toggle('d-none');
-        });
-    });
-</script>
-
-
 <form asp-action="EditProfile" asp-controller="Accounts" method="post" asp-antiforgery="true" enctype="multipart/form-data" asp-route-id="@Model.userId">
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -179,9 +169,20 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary" id="saveProfileChanges">Сохранить изменения</button>
+                    <button type="submit"  class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var button = document.getElementById('ButtonOpenUnPublishVacancy');
+        var block = document.getElementById('BlockVacancy');
+        button.addEventListener('click', function() {
+            block.classList.toggle('d-none');
+        });
+    });
+</script>
