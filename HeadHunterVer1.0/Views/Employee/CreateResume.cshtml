@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model HeadHunterVer1._0.ViewModels.CreateResumeViewModel
+@inject UserManager<User> UserManager;
+
+@{
+    ViewBag.Title = "Создание резюме";
+    Layout = "_Layout";
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
+<form method="post" asp-controller="Employee" asp-action="CreateResume" asp-antiforgery="true" class="p-4">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="NameOfResume">Название резюме:</label>
+        <input type="text" class="form-control" asp-for="NameOfResume" id="nameOfVacancy" placeholder="Введите название резюме">
+        <span asp-validation-for="NameOfResume" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="ExpectedSalary">Желаемая зарплата:</label>
+        <input type="number" class="form-control" asp-for="ExpectedSalary" id="nameOfVacancy" placeholder="Введите желаемую зарплату">
+        <span asp-validation-for="ExpectedSalary" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="TelegramLink">Ссылка на телеграм:</label>
+        <input type="text" class="form-control" asp-for="TelegramLink" id="wages" placeholder="Введите ссылку на телеграм">
+        <span asp-validation-for="TelegramLink" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="Email">Электронная почта:</label>
+        <input type="number" class="form-control" asp-for="Email" id="experienceYearsFrom" placeholder="Введите свою электронную почту">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="Phone">Номер телефона:</label>
+        <input type="number" class="form-control" asp-for="Phone" id="experienceYearsFrom" placeholder="Введите свой номер телефона">
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <input type="hidden" class="form-control" asp-for="@Model.IsPublished" value="true">
+    </div>
+
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="CategoryViewModels">Выберите категорию:</label>
+        <div class="form-group">
+            <select asp-for="CategoryId" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                @foreach (var category in Model.CategoryViewModels)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryViewModels" class="text-danger"></span>
+        </div>
+
+        <span asp-validation-for="CategoryViewModels" class="text-danger"></span>
+    </div>
+    
+    <div id="JobExp"></div>
+    <div id="CourseExp"></div>
+    <button type="button" class="btn btn-primary" id="addJobExperience">Добавить опыт работы</button>
+    
+    <button type="submit" class="btn btn-primary btn-block mt-3">Создать резюме</button>
+
+    <div class="text-center mt-3">
+        <a asp-action="AboutProfile" asp-controller="Employee" asp-route-id="@currentUser.Id">Вернуться обратно</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let jobExpCounter = 0;
+
+            $('#addJobExperience').click(function () {
+                let jobExpId = 'jobExp_' + jobExpCounter;
+
+                let jobExpForm = $('<div>', { id: jobExpId });
+
+                jobExpForm.append('<label>Место работы:</label>');
+                jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].CompanyName" class="form-control" />');
+
+                jobExpForm.append('<label>Должность:</label>');
+                jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Post" class="form-control" />');
+
+                $('#JobExp').append(jobExpForm);
+
+                jobExpCounter++;
+            });
+        });
+    </script>
+}
