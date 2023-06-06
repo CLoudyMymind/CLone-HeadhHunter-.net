@@ -1,4 +1,6 @@
-﻿namespace HeadHunterVer1._0.ViewModels;
+﻿using HeadHunterVer1._0.Models.Employee;
+
+namespace HeadHunterVer1._0.ViewModels;
 
 public class AboutViewModel
 {
@@ -11,7 +13,6 @@ public class AboutViewModel
     public string NewPassword { get; set; }
     public string OldPassword { get; set; }
     public IFormFile AvatarFile { get; set; }
-
     public string PhoneNumber { get; set; }
-
+    public List<Resume> Resumes { get; set; }
 }

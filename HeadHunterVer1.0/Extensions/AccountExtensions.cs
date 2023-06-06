@@ -1,17 +1,20 @@
-﻿using HeadHunterVer1._0.Models;
-using HeadHunterVer1._0.Services;
+﻿using HeadHunterVer1._0.Context;
+using HeadHunterVer1._0.Models;
 using HeadHunterVer1._0.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HeadHunterVer1._0.Extensions
 {
     public  class AccountExtensions
     {
         private readonly UserManager<User> _userManager;
+        private readonly HeadHunterContext _db;
 
-        public AccountExtensions(UserManager<User> userManager)
+        public AccountExtensions(UserManager<User> userManager, HeadHunterContext db)
         {
             _userManager = userManager;
+            _db = db;
         }
 
         public async Task<AboutViewModel> EmployeeAboutViewModelExtensions(IdentityUser user, string pathFile, User userData)
@@ -26,7 +29,13 @@ namespace HeadHunterVer1._0.Extensions
                 NameCompanyOrUser = user.UserName,
                 Role = role,
                 PhoneNumber = user.PhoneNumber,
-
+                //Сюда потом надо передать уже готовые резюме через сервис
+                Resumes = await _db.Resumes
+                    .Include(r => r.WorkExperiences)
+                    .Include(r => r.Courses)
+                    .Include(r => r.Category)
+                    .Include(r => r.Employee)
+                    .ToListAsync()
             };
             return aboutViewModel;
         }

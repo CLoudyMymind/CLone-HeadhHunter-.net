@@ -12,6 +12,7 @@ public class Resume
     public string Phone { get; set; }
     public string? FacebookLink { get; set; }
     public string? LinkedInLink { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public string CategoryId { get; set; }
     public Category Category { get; set; }
     public List<WorkExperience>? WorkExperiences { get; set; }

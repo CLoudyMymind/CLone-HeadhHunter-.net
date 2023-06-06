@@ -40,5 +40,6 @@ public class EmployeeService : IEmployeeService
             Courses = viewModel.Courses
         };
         await _db.Resumes.AddAsync(newResume);
+        await _db.SaveChangesAsync();
     }
 }

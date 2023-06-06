@@ -32,6 +32,26 @@
             </div>
         </div>
     </div>
+    @foreach (var resume in Model.Resumes)
+    {
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <p class="card-text card-title">
+                    <strong>Имя резюме:</strong> @resume.NameOfResume
+                </p>
+                @if (resume.UpdatedAt is not null)
+                {
+                    <p class="card-text card-title">
+                        <strong>Почта:</strong> @resume.UpdatedAt
+                    </p>
+                }
+                <p class="card-text card-title">
+                    <strong>Опыт работы:</strong> @resume.WorkExperiences.Count
+                    <strong>Образование:</strong> @resume.Courses.Count
+                </p>
+            </div>
+        </div>
+    }
 </div>
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
