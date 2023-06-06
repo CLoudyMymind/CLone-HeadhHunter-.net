@@ -39,7 +39,7 @@
         <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <input type="hidden" class="form-control" asp-for="@Model.IsPublished" value="true">
+        <input type="hidden" class="form-control" asp-for="@Model.IsPublished" value="false">
     </div>
 
     <div class="mb-3">
@@ -60,7 +60,8 @@
     <div id="JobExp"></div>
     <div id="CourseExp"></div>
     <button type="button" class="btn btn-primary" id="addJobExperience">Добавить опыт работы</button>
-    
+    <button type="button" class="btn btn-primary" id="addCourseExperience">Добавить образование</button>
+
     <button type="submit" class="btn btn-primary btn-block mt-3">Создать резюме</button>
 
     <div class="text-center mt-3">
@@ -72,28 +73,52 @@
     <script>
         $(document).ready(function () {
             let jobExpCounter = 0;
+            let courseExpCounter = 0;
 
             $('#addJobExperience').click(function () {
                 let jobExpId = 'jobExp_' + jobExpCounter;
 
-                let jobExpForm = $('<div>', { id: jobExpId });
+                let jobExpForm = $('<div>', { id: jobExpId, class: 'card mb-3' });
 
-                jobExpForm.append('<label>Место работы:</label>');
-                jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].CompanyName" class="form-control" />');
+                let cardBody = $('<div>', { class: 'card-body' });
 
-                jobExpForm.append('<label>Должность:</label>');
-                jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Post" class="form-control" />');
-                
-                jobExpForm.append('<label>Обязанности:</label>');
-                jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Responsibilities" class="form-control" />');
-                
-                jobExpForm.append('<label>Сколько полных лет вы там работали:</label>');
-                jobExpForm.append('<input type="number" name="WorkExperiences[' + jobExpCounter + '].YearsOfWork" class="form-control" />');
+                cardBody.append('<label class="form-label">Место работы:</label>');
+                cardBody.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].CompanyName" class="form-control" />');
+
+                cardBody.append('<label class="form-label">Должность:</label>');
+                cardBody.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Post" class="form-control" />');
+
+                cardBody.append('<label class="form-label">Обязанности:</label>');
+                cardBody.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Responsibilities" class="form-control" />');
+
+                cardBody.append('<label class="form-label">Сколько полных лет вы там работали:</label>');
+                cardBody.append('<input type="number" name="WorkExperiences[' + jobExpCounter + '].YearsOfWork" class="form-control" />');
+
+                jobExpForm.append(cardBody);
 
                 $('#JobExp').append(jobExpForm);
 
                 jobExpCounter++;
             });
+
+            $('#addCourseExperience').click(function () {
+                let courseExpId = 'courseExp_' + courseExpCounter;
+
+                let courseExpForm = $('<div>', { id: courseExpId, class: 'card mb-3' });
+
+                let cardBody = $('<div>', { class: 'card-body' });
+
+                cardBody.append('<div class="mb-3"><label>Название курса:</label><input type="text" name="Courses[' + courseExpCounter + '].CourseName" class="form-control" /></div>');
+
+                cardBody.append('<div class="mb-3"><label>На кого обучались:</label><input type="text" name="Courses[' + courseExpCounter + '].EducatedPost" class="form-control" /></div>');
+
+                courseExpForm.append(cardBody);
+
+                $('#CourseExp').append(courseExpForm);
+
+                courseExpCounter++;
+            });
+
         });
     </script>
 }
