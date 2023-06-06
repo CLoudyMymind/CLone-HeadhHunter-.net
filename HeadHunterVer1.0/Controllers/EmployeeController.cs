@@ -1,6 +1,8 @@
-﻿using HeadHunterVer1._0.Services.Abstractions;
+﻿using HeadHunterVer1._0.Models;
+using HeadHunterVer1._0.Services.Abstractions;
 using HeadHunterVer1._0.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunterVer1._0.Controllers;
@@ -11,11 +13,18 @@ public class EmployeeController : Controller
 {
     private readonly IAccountService _accountService;
     private readonly ICategoryService _categoryService;
+    private readonly IEmployeeService _employeeService;
+    private readonly UserManager<User> _userManager;
 
-    public EmployeeController(IAccountService accountService, ICategoryService categoryService)
+    public EmployeeController(
+        IAccountService accountService, 
+        ICategoryService categoryService, 
+        IEmployeeService employeeService, UserManager<User> userManager)
     {
         _accountService = accountService;
         _categoryService = categoryService;
+        _employeeService = employeeService;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -37,6 +46,8 @@ public class EmployeeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateResume(CreateResumeViewModel viewModel)
     {
-        return View();
+        await _employeeService.CreateResume(viewModel, User);
+        var currentUser = await _userManager.GetUserAsync(User);
+        return RedirectToAction("AboutProfile", new {id = currentUser.Id});
     }
 }

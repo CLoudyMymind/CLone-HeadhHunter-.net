@@ -43,6 +43,7 @@ builder.Services.AddScoped<AccountExtensions>();
 builder.Services.AddScoped<MapTo>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEmployerService, EmployerService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 
 builder.Services.Configure<IdentityOptions>(options =>
