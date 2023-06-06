@@ -83,6 +83,12 @@
 
                 jobExpForm.append('<label>Должность:</label>');
                 jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Post" class="form-control" />');
+                
+                jobExpForm.append('<label>Обязанности:</label>');
+                jobExpForm.append('<input type="text" name="WorkExperiences[' + jobExpCounter + '].Responsibilities" class="form-control" />');
+                
+                jobExpForm.append('<label>Сколько полных лет вы там работали:</label>');
+                jobExpForm.append('<input type="number" name="WorkExperiences[' + jobExpCounter + '].YearsOfWork" class="form-control" />');
 
                 $('#JobExp').append(jobExpForm);
 
