@@ -43,7 +43,7 @@ public class EmployerService : IEmployerService
         return vacancyViewModels;
     }
 
-    public async Task<Vacancy> GetByIdVacancy(string? id, ClaimsPrincipal user)
+    public async Task<Vacancy> GetByIdVacancyAsync(string? id, ClaimsPrincipal user)
     {
         return  await _headHunterContext.Vacancies.Include(c => c.Category).OrderByDescending(v => v.UpdateVacancyBid)
             .Where(v => v.UserId == _userManager.GetUserId(user)).FirstOrDefaultAsync(v => v.Id == id)
@@ -53,17 +53,17 @@ public class EmployerService : IEmployerService
 
     public async Task UpdateDate(string id , ClaimsPrincipal user)
     {
-      var data = await GetByIdVacancy(id, user);
+      var data = await GetByIdVacancyAsync(id, user);
       data.UpdateVacancyBid = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("F"));
       _headHunterContext.Vacancies.Update(data);
       await _headHunterContext.SaveChangesAsync();
     }
 
-    public async Task<VacancyViewModel> AboutVacancy(string id , ClaimsPrincipal user )=> 
-        _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancy(id, user));
-    public async Task UpdatePublishStatus(string id, ClaimsPrincipal user, bool isPublished)
+    public async Task<VacancyViewModel> AboutVacancyAsync(string id , ClaimsPrincipal user )=> 
+        _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancyAsync(id, user));
+    public async Task UpdatePublishStatusAsync(string id, ClaimsPrincipal user, bool isPublished)
     {
-        var data = await GetByIdVacancy(id, user);
+        var data = await GetByIdVacancyAsync(id, user);
         data.IsPublished = isPublished;
         _headHunterContext.Vacancies.Update(data);
         await _headHunterContext.SaveChangesAsync();

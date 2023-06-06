@@ -51,7 +51,7 @@ public class EmployerController : Controller
     public async Task<IActionResult> AboutVacancy(string id)
     {
         if (HttpContext.User.IsInRole("employer"))
-            return View(await _employerService.AboutVacancy(id, HttpContext.User));
+            return View(await _employerService.AboutVacancyAsync(id, HttpContext.User));
         return NotFound();
     }
     [HttpGet]
@@ -66,7 +66,7 @@ public class EmployerController : Controller
     public async Task<IActionResult> UnPublish(string id)
     {
         if (!HttpContext.User.IsInRole("employer")) return NotFound();
-        await _employerService.UpdatePublishStatus(id, HttpContext.User, false);
+        await _employerService.UpdatePublishStatusAsync(id, HttpContext.User, false);
         return RedirectToAction("AboutProfile");
 
     }
@@ -74,7 +74,7 @@ public class EmployerController : Controller
     public async Task<IActionResult> Publish(string id)
     {
         if (!HttpContext.User.IsInRole("employer")) return NotFound();
-        await _employerService.UpdatePublishStatus(id, HttpContext.User,true);
+        await _employerService.UpdatePublishStatusAsync(id, HttpContext.User,true);
         return RedirectToAction("AboutProfile");
 
     }

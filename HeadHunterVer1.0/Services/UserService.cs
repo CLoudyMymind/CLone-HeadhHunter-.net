@@ -22,7 +22,7 @@ public class UserService : IUserService
     {
         return await  _headHunterContext.Users.FirstOrDefaultAsync(u => u.Id == (id ?? _userManager.GetUserId(user)));
     }
-    public async Task<User?> CheckPhoneNumber(string? phone) => 
+    public async Task<User?> CheckPhoneNumberAsync(string? phone) => 
         phone != null ? await _headHunterContext.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phone) : throw new Exception("Такого номера нету");
     
 
