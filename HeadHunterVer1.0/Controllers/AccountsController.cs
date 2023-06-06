@@ -29,13 +29,17 @@ public class AccountsController : Controller
         _userService = userService;
         _accountExtensions = accountExtensions;
     }
-
+    [AllowAnonymous]
+    [HttpGet]
     public IActionResult Index()
     {
+        if (!User.Identity.IsAuthenticated) 
+            return RedirectToAction("Login");
         return View();
     }
 
- 
+    [HttpGet]
+
     public async Task<IActionResult> DownloadPdf(string id)
     {
         try
@@ -51,6 +55,7 @@ public class AccountsController : Controller
     
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditProfile(EditAccountProfileViewModels model, string id, string? imageUrl)
     {
         try
