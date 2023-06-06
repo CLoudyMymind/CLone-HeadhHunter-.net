@@ -5,5 +5,5 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 
 public interface IEmployeeService
 {
-    Task CreateResume(CreateResumeViewModel viewModel, ClaimsPrincipal user);
+    Task CreateResumeAsync(CreateResumeViewModel viewModel, ClaimsPrincipal user);
 }

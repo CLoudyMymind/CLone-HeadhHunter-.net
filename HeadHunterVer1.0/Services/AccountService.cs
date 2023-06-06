@@ -79,7 +79,7 @@ public class AccountService : IAccountService
         {
             var user = await _userManager.FindByNameAsync(model.Name)
                        ?? await _userManager.FindByEmailAsync(model.Name)
-                       ?? await _userService.CheckPhoneNumber(model.Name);
+                       ?? await _userService.CheckPhoneNumberAsync(model.Name);
             ;
             if (user == null) throw new Exception("Такого пользователя нету");
             var signInResult = await _signInManager.PasswordSignInAsync(
@@ -101,7 +101,7 @@ public class AccountService : IAccountService
 
     public async Task<bool> IsUserExistsAsync(LoginViewModel model)
     {
-        var user = await _userManager.FindByNameAsync(model.Name) ?? await _userManager.FindByEmailAsync(model.Name) ?? await _userService.CheckPhoneNumber(model.Name);
+        var user = await _userManager.FindByNameAsync(model.Name) ?? await _userManager.FindByEmailAsync(model.Name) ?? await _userService.CheckPhoneNumberAsync(model.Name);
         return user != null;
     }
 
@@ -110,7 +110,7 @@ public class AccountService : IAccountService
         if (model.Name == null) return false;
         var user = await _userManager.FindByNameAsync(model.Name)
                    ?? await _userManager.FindByEmailAsync(model.Name)
-                   ?? await _userService.CheckPhoneNumber(model.Name);
+                   ?? await _userService.CheckPhoneNumberAsync(model.Name);
         if (user == null) return false;
         var passwordValid = await _userManager.CheckPasswordAsync(user, password);
         return passwordValid;
@@ -119,7 +119,7 @@ public class AccountService : IAccountService
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model, string imgPath)
     {
         var user = _accountExtensions.UserModelExtensions(model, imgPath);
-        var phoneNumberExists = await _userService.CheckPhoneNumber(model.PhoneNumber);
+        var phoneNumberExists = await _userService.CheckPhoneNumberAsync(model.PhoneNumber);
         if (phoneNumberExists != null)
         {
             var identityError = new IdentityError

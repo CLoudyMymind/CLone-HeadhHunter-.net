@@ -19,7 +19,7 @@ public class EmployeeService : IEmployeeService
         _userManager = userManager;
     }
 
-    public async Task CreateResume(CreateResumeViewModel viewModel, ClaimsPrincipal user)
+    public async Task CreateResumeAsync(CreateResumeViewModel viewModel, ClaimsPrincipal user)
     {
         var currentUser = await _userManager.GetUserAsync(user);
         if (currentUser is null)

@@ -49,6 +49,12 @@
       <_ContentIncludedByDefault Remove="wwwroot\images\9161ebd6-6d57-4c5a-883a-70cbcff45426.png" />
       <_ContentIncludedByDefault Remove="wwwroot\images\b8743cb7-e402-4608-9d98-f63be0607e82.png" />
       <_ContentIncludedByDefault Remove="wwwroot\images\e17c2781-6520-4d4b-b107-2c79a889acc8.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\085cc662-071e-455e-8efe-1daf05548523.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\0ee77706-5588-4042-909f-7fc419eaa330.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\477834ed-8cb0-4bbe-ba7a-df1f4c141b7a.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\82e3b622-2c3d-460d-a5aa-665d82dcd8c1.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\96a4fa45-e672-4c96-b38d-40267b33d3f7.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\f6ab9e96-7198-4e06-a455-4c316ad00146.png" />
     </ItemGroup>
 
     <ItemGroup>

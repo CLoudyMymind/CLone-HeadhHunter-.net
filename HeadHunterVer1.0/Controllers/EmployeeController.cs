@@ -46,7 +46,7 @@ public class EmployeeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateResume(CreateResumeViewModel viewModel)
     {
-        await _employeeService.CreateResume(viewModel, User);
+        await _employeeService.CreateResumeAsync(viewModel, User);
         var currentUser = await _userManager.GetUserAsync(User);
         return RedirectToAction("AboutProfile", new {id = currentUser.Id});
     }
