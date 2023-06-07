@@ -75,6 +75,26 @@
             let jobExpCounter = 0;
             let courseExpCounter = 0;
 
+            function updateJobExperienceIndexes() {
+                $('#JobExp .card').each(function (index) {
+                    $(this).find('[name^="WorkExperiences"]').each(function () {
+                        let name = $(this).attr('name');
+                        let updatedName = name.replace(/\[(\d+)\]/, '[' + index + ']');
+                        $(this).attr('name', updatedName);
+                    });
+                });
+            }
+
+            function updateCourseExperienceIndexes() {
+                $('#CourseExp .card').each(function (index) {
+                    $(this).find('[name^="Courses"]').each(function () {
+                        let name = $(this).attr('name');
+                        let updatedName = name.replace(/\[(\d+)\]/, '[' + index + ']');
+                        $(this).attr('name', updatedName);
+                    });
+                });
+            }
+
             $('#addJobExperience').click(function () {
                 let jobExpId = 'jobExp_' + jobExpCounter;
 
@@ -94,11 +114,19 @@
                 cardBody.append('<label class="form-label">Сколько полных лет вы там работали:</label>');
                 cardBody.append('<input type="number" name="WorkExperiences[' + jobExpCounter + '].YearsOfWork" class="form-control" />');
 
+                let deleteButton = $('<button>', { class: 'btn btn-danger mt-2', text: 'Удалить' });
+                deleteButton.click(function () {
+                    jobExpForm.remove();
+                    updateJobExperienceIndexes();
+                });
+
+                cardBody.append(deleteButton);
                 jobExpForm.append(cardBody);
 
                 $('#JobExp').append(jobExpForm);
 
                 jobExpCounter++;
+                updateJobExperienceIndexes();
             });
 
             $('#addCourseExperience').click(function () {
@@ -112,11 +140,20 @@
 
                 cardBody.append('<div class="mb-3"><label>На кого обучались:</label><input type="text" name="Courses[' + courseExpCounter + '].EducatedPost" class="form-control" /></div>');
 
+                let deleteButton = $('<button>', { class: 'btn btn-danger mt-2', text: 'Удалить' });
+                deleteButton.click(function () {
+                    courseExpForm.remove();
+                    updateCourseExperienceIndexes();
+                });
+
+                cardBody.append(deleteButton);
+
                 courseExpForm.append(cardBody);
 
                 $('#CourseExp').append(courseExpForm);
 
                 courseExpCounter++;
+                updateCourseExperienceIndexes();
             });
 
         });
