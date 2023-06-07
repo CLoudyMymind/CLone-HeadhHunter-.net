@@ -39,7 +39,7 @@ public class EmployeeController : Controller
     [Authorize]
     public async Task<IActionResult> CreateResume()
     {
-        return View(new CreateResumeViewModel { CategoryViewModels = await _categoryService.GetAllCategoryListAsync() });
+        return View(new CreateResumeViewModel { CategoryViewModels = await _categoryService.GetAllCategoryViewModelListAsync() });
     }
     
     [HttpPost]

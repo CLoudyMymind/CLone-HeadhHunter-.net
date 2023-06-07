@@ -23,6 +23,18 @@ public class MapTo
         };
         return newVacancy;
     }
+    public Vacancy MapToVacancyEdit(EditVacancyViewModel viewModel, Vacancy model,string id)
+    {
+        model.CategoryId = viewModel.CategoryId;
+        model.Description = viewModel.Description;
+        model.ExperienceYearsFrom = viewModel.ExperienceYearsFrom;
+        model.ExperienceYearsTo = viewModel.ExperienceYearsTo;
+        model.Title = viewModel.Caption;
+        if (model.Wages != null)
+            model.Wages = viewModel.Wages.Value;
+        return model;
+    }
+
 
     public List<CategoryViewModel> MapToListCategories(List<Category> categories)
     {
@@ -33,10 +45,15 @@ public class MapTo
         }).ToList();
     }
 
-    public VacancyJobsCreateViewModel MapToCategoryViewModel(List<CategoryViewModel> model)
+    public VacancyJobsCreateViewModel MapToCategoryViewModel(List<Category> model)
     {
         return new VacancyJobsCreateViewModel { CategoryViewModels = model };
     }
+    public EditVacancyViewModel MapToCategoryViewModelEdit(List<CategoryViewModel> model)
+    {
+        return new EditVacancyViewModel { CategoryViewModels = model };
+    }
+
 
     public VacancyViewModel MapVacancyToVacancyViewModel(Vacancy model)
     {
@@ -54,6 +71,24 @@ public class MapTo
             SelectedCategoryName =model.Category.Name,
         };
     }
+    public EditVacancyViewModel MapVacancyToEditVacancyViewModel(Vacancy model, List<Category> categories)
+    {
+        
+        return  new EditVacancyViewModel
+        {
+            Id = model.Id,
+            Wages = model.Wages,
+            IsPublished = model.IsPublished,
+            ExperienceYearsFrom = model.ExperienceYearsFrom,
+            ExperienceYearsTo = model.ExperienceYearsTo,
+            UpdateVacancyBid = model.UpdateVacancyBid,
+            Description = model.Description,
+            Caption = model.Title,
+            SelectedCategoryName =model.Category.Name,
+            CategoryViewModels = MapToListCategories(categories)
+        };
+    }
+
 
    
 }

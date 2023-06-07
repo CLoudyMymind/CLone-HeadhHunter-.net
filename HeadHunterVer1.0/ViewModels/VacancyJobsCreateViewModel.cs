@@ -1,4 +1,6 @@
-﻿namespace HeadHunterVer1._0.ViewModels;
+﻿using HeadHunterVer1._0.Models;
+
+namespace HeadHunterVer1._0.ViewModels;
 
 public class VacancyJobsCreateViewModel
 {
@@ -13,7 +15,7 @@ public class VacancyJobsCreateViewModel
     public bool IsPublished { get; set; }
 
     public string Description { get; set; }
-    public List<CategoryViewModel>? CategoryViewModels { get; set; }
+    public List<Category> CategoryViewModels { get; set; }
 
     public int? ExperienceYearsFrom { get; set; }
     public int? ExperienceYearsTo { get; set; }

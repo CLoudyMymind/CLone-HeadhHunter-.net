@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunterVer1._0.ViewModels.EditVacancyViewModel
+@inject UserManager<User> UserManager;
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+<form method="post" asp-controller="Employer" asp-action="EditVacancy" asp-antiforgery="true" class="p-4">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="Caption">Название должности:</label>
+        <input type="text" class="form-control" asp-for="Caption" id="nameOfVacancy" placeholder="Введите название должности">
+        <span asp-validation-for="Caption" class="text-danger"></span>
+    </div>
+        <div class="mb-3">
+                <label class="fw-bold" asp-for="Description">описание должности:</label>
+                <input type="text" class="form-control" asp-for="Description" id="Description" placeholder="Введите название должности">
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="Wages">Заработная плата:</label>
+        <input type="number" class="form-control" asp-for="Wages" id="wages" placeholder="Введите заработную плату">
+        <span asp-validation-for="Wages" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="ExperienceYearsFrom">Опыт работы (от):</label>
+        <input type="number" class="form-control" asp-for="ExperienceYearsFrom" id="experienceYearsFrom" placeholder="Опыт работы от (в годах)">
+        <span asp-validation-for="ExperienceYearsFrom" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+            <label class="fw-bold" asp-for="ExperienceYearsTo">Опыт работы (До):</label>
+            <input type="number" class="form-control" asp-for="ExperienceYearsTo" id="experienceYearsTo" placeholder="Опыт работы от (в годах)">
+            <span asp-validation-for="ExperienceYearsTo" class="text-danger"></span>
+        </div>
+    <div class="mb-3">
+        <input type="hidden" class="form-control" asp-for="@Model.IsPublished" value="true">
+    </div>
+
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="CategoryViewModels">Выберите категорию:</label>
+        <div class="form-group">
+                <select asp-for="CategoryId" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                @foreach (var category in Model.CategoryViewModels)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryViewModels" class="text-danger"></span>
+        </div>
+
+        <span asp-validation-for="CategoryViewModels" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block mt-3">Создать вакансию</button>
+
+    <div class="text-center mt-3">
+        <a asp-action="AboutProfile" asp-controller="Employer" asp-route-id="@UserManager.GetUserId(User)">Вернуться обратно</a>
+    </div>
+</form>

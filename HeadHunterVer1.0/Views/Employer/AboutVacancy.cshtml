@@ -28,10 +28,9 @@
                         <p>Да</p>
                     }
                 </p>
-                @if (User.IsInRole("employer"))
-                {
-                    <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Вернуться обратно</a>
-                }
+                <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Вернуться обратно</a>
+                <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="EditVacancy" asp-route-id="@Model.Id">Изменить данные вакансии</a>
+                
             </div>
         </div>
     </div>

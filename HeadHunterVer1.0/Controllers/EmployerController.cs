@@ -78,4 +78,21 @@ public class EmployerController : Controller
         return RedirectToAction("AboutProfile");
 
     }
+
+    [HttpGet]
+    public async Task<IActionResult> EditVacancy(string id)
+    {
+        if (!HttpContext.User.IsInRole("employer")) return NotFound();
+        return View(await _employerService.EditVacancyAsync(id, HttpContext.User));
+    }
+    [HttpPost]
+    public async Task<IActionResult> EditVacancy(EditVacancyViewModel model)
+    {
+        if (!HttpContext.User.IsInRole("employer")) return NotFound();
+        await _employerService.EditVacancyAsync(model, HttpContext.User);
+        return RedirectToAction("AboutProfile");
+    }
+
+    
+    
 }
