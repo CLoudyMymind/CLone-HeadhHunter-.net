@@ -1,5 +1,6 @@
 ﻿using HeadHunterVer1._0.Context;
 using HeadHunterVer1._0.Extensions;
+using HeadHunterVer1._0.Models;
 using HeadHunterVer1._0.Services.Abstractions;
 using HeadHunterVer1._0.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,9 @@ public class CategoryService : ICategoryService
         _db = db;
         _mapTo = mapTo;
     }
-    public async Task<List<CategoryViewModel>> GetAllCategoryListAsync() =>
+    public async Task<List<CategoryViewModel>> GetAllCategoryViewModelListAsync() =>
         _mapTo.MapToListCategories(await _db.Categories.ToListAsync());
+
+    public async Task<List<Category>> GetAllCategoryListAsync() => await _db.Categories.ToListAsync();
 
 }
