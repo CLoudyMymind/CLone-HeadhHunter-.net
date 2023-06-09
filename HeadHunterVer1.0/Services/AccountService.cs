@@ -66,7 +66,7 @@ public class AccountService : IAccountService
         var userData = await _userService.UserSearchAsync(id, user);
         if (userData == null) throw new Exception("Произошла ошибка, обратитесь в поддержку");
         if (user.IsInRole("employer"))
-            return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyAsync(user));
+            return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyInUserAsync(user));
         if (user.IsInRole("employee"))
             return await _accountExtensions.EmployeeAboutViewModelExtensions(userData, userData.PathFile, userData);
         throw new Exception("Произошла ошибка, обратитесь в поддержку");
