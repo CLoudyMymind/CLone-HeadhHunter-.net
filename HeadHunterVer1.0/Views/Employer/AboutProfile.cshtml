@@ -7,6 +7,7 @@
     ViewBag.Title = "Личный кабинет";
     Layout = "_Layout";
 }
+<link rel="stylesheet" href="~/css/EmployerVacancy.css" asp-append-version="true"/>
 
 
 @if (TempData["Error"] != null)
@@ -33,7 +34,6 @@
                         <strong>Роль:</strong> @Model.Role
                     </p>
                 </div>
-                <a class="btn btn-outline-success" asp-area="" asp-controller="Accounts" asp-action="DownloadPdf" asp-route-id="@UserManager.GetUserId(User)">Скачать данные</a>
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
                 <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
             </div>
@@ -43,41 +43,45 @@
 @if (Model.userId == UserManager.GetUserId(User))
 {
     @if (Model.VacancyViewModels.Any())
-    { <div class="row mt-5">
-          @foreach (var data in Model.VacancyViewModels)
-          {
-              if (data.IsPublished)
-              {
-                  <div class="col-md-3">
-                      <div class="card mb-4">
-                          <div class="card-body">
-                              <h5 class="card-title">
-                                  <a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a>
-                              </h5>
-                              <p class="card-text">Зарплата: @data.Wages</p>
-                              <p class="card-text">Опыт работы от: @data.ExperienceYearsTo</p>
-                              <p class="card-text">Опыт работы до: @data.ExperienceYearsFrom</p>
-                              <p class="card-text">Последние обновление: @data.UpdateVacancyBid</p>
-                              <p class="card-text">
-                                  Опубликовано:
-                                  @if (data.IsPublished == false)
-                                  {
-                                      <span>Нет</span>
-                                  }
-                                  else
-                                  {
-                                      <span>Да</span>
-                                  }
-                              </p>
-                          </div>
-                          <a class="btn btn-outline-success" asp-action="UnPublish" asp-controller="Employer" asp-route-id="@data.Id"> Снять с публикации</a>
-                          <a class="btn btn-outline-success" asp-action="UpdateVacancyDatePublished" asp-controller="Employer" asp-route-id="@data.Id">обновить публикацию</a>
-                      </div>
-                  </div>
-              }
-          }
-      </div>
+    {
+        <div class="center">
+            {
+            @foreach (var data in Model.VacancyViewModels)
+            {
+                <ul>
+                    <li >
+                        <div class="image">
+                            <h4><a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a></h4>
+                            <P>Зарплата: @data.Wages kzt</p>
+                        </div>
 
+                        <div class="text-group">
+                            <p>
+                                <h4>Опыт работы: от @data.ExperienceYearsFrom до @data.ExperienceYearsTo лет</h4>
+                            </p>
+                            <p>Последние обновление:@data.UpdateVacancyBid.ToString("G")</p>
+                        </div>
+                        <div class="date-group">
+
+                            <P>
+                                @if (data.IsPublished)
+                                {
+                                    <p style="margin-left: 15px">   Опубликовано</p>
+                                    <a class="btn btn-outline-dark text-light" asp-action="UnPublish" asp-controller="Employer" asp-route-id="@data.Id">Снять публикацию</a>
+                                }
+                                else
+                                {
+                                    <p>Публикация не актуальна</p>
+                                    <a class="btn btn-outline-dark text-light" asp-action="Publish" asp-controller="Employer" asp-route-id="@data.Id">Опубликовать публикацию</a>
+                                }
+                            </p>
+                        </div>
+                        <a class="btn btn-outline-dark text-light" asp-action="UpdateVacancyDatePublished" asp-controller="Employer" asp-route-id="@data.Id">Обновить публикацию</a>
+                    </li>
+                </ul>
+            }
+
+        </div>
     }
     else
     {
@@ -87,35 +91,7 @@
         </p>
     }
 }
-@if (Model.userId == UserManager.GetUserId(User))
-{
-    <div class="row mt-5 d-none" id="BlockVacancy">
-        @foreach (var data in Model.VacancyViewModels)
-        {
-            if (data.IsPublished == false)
-            {
-                <div class="col-md-3">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a asp-action="AboutVacancy" asp-route-id="@data.Id">@data.Title</a>
-                            </h5>
-                            <p class="card-text">
-                                Опубликовано: `
-                                @if (data.IsPublished == false)
-                                {
-                                    <span>Нет</span>
-                                }
-                            </p>
-                        </div>
-                        <a class="btn btn-outline-success" asp-action="Publish" asp-controller="Employer" asp-route-id="@data.Id"> Опубликовать заново</a>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-}
-<button id="ButtonOpenUnPublishVacancy" class="btn-outline-success btn mt-5">Открыть список снятых вакансий</button>
+
 
 <form asp-action="EditProfile" asp-controller="Accounts" method="post" asp-antiforgery="true" enctype="multipart/form-data" asp-route-id="@Model.userId">
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -127,18 +103,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Выберите роль:</label><br>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" asp-for="Role" value="employer" onclick="toggleNicknameField(true)">
-                            <label class="form-check-label">Работодатель</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" asp-for="Role" value="employee" onclick="toggleNicknameField(false)">
-                            <label class="form-check-label">Работник</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="nicknameLabel" asp-for="NameCompanyOrUser"></label>
+                        <label id="nicknameLabel" asp-for="NameCompanyOrUser">Введите имя компании:</label>
                         <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser" class="form-control">
                         <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
                     </div>
@@ -176,14 +141,3 @@
         </div>
     </div>
 </form>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var button = document.getElementById('ButtonOpenUnPublishVacancy');
-        var block = document.getElementById('BlockVacancy');
-        button.addEventListener('click', function() {
-            block.classList.toggle('d-none');
-        });
-    });
-</script>
