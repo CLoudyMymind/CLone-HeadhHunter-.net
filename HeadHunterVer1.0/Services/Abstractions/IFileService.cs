@@ -15,9 +15,9 @@ public interface IFileService
     Task<string> FileRegisterCheckAsync(RegisterViewModel model);
     Task<string> FileEditAsync(EditAccountProfileViewModels model);
 
-    Task<byte[]> GeneratePdfAsync(string id, ClaimsPrincipal user);
+    Task<byte[]> GeneratePdfAsync(int id, ClaimsPrincipal user);
 
     string ContentTypeFile();
 
-    string GeneratePdfFileName(string id);
+    string GeneratePdfFileName(int id);
 }
