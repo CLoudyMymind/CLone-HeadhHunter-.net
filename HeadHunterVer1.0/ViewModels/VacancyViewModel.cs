@@ -6,6 +6,7 @@ public class VacancyViewModel
 {
     public string Id { get; set; }
 
+    public string NameOfCompany { get; set; }
     public decimal Wages { get; set; }
 
     public bool IsPublished { get; set; }
@@ -16,6 +17,6 @@ public class VacancyViewModel
     public DateTime UpdateVacancyBid { get; set; }
     public string Description { get; set; }
     public string Title { get; set; }
-    public string SelectedCategoryName { get; set; }
+    public Category SelectedCategoryName { get; set; }
 
 }
