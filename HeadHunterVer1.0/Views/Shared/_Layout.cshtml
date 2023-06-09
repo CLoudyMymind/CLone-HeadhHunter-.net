@@ -15,7 +15,7 @@
 <header>
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand text-light" asp-area="" asp-controller="Accounts" asp-action="Index"><img class="w-50 h-50" src="/icon/min-hh-red.png"/></a>
+            <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-50 h-50" src="/icon/min-hh-red.png"/></a>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between text-light">
                 <ul class="navbar-nav flex-grow-1">
                     @if (User.Identity.IsAuthenticated)
@@ -32,6 +32,9 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
                             </li>
                         }
+                        <li>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Главная страница</a>
+                        </li>
                         <li class="nav-item ms-auto">
                             <form asp-action="LogOff" asp-controller="Accounts" method="post" asp-antiforgery="true">
                                 <button type="submit" class="btn btn-outline-info">Выйти</button>
@@ -60,7 +63,7 @@
 
 <footer class="border-top footer text-muted fixed-bottom bottom-0 text-decoration-none ">
     <div class="container">
-        <a class="navbar-brand text-black" asp-area="" asp-controller="Accounts" asp-action="Index">HeadHunterVer1._0</a>
+        <a class="navbar-brand text-black" asp-area="" asp-controller="Home" asp-action="Index">HeadHunterVer1._0</a>
 
     </div>
 </footer>
