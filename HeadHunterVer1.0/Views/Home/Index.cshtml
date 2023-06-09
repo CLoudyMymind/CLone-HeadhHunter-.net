@@ -1,0 +1,115 @@
+﻿@model HeadHunterVer1._0.ViewModels.HomeIndexViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+    <link rel="stylesheet" href="~/css/IconStyle.css" asp-append-version="true"/>
+
+@if (User.IsInRole("employee") && User.Identity.IsAuthenticated)
+{
+@if (Model.VacancyViewModel.Any())
+{
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <form asp-action="Index" method="get" class="form-inline my-2 my-lg-0">
+                <div class="input-group">
+                    <input class="form-control mr-sm-2" type="search" placeholder="по имени" name="Name" aria-label="Поиск">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Поиск</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">
+                <a asp-action="Index" asp-route-sortState="@Model.CategorySort">Сортировка по Категории</a>
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">
+                <a asp-action="Index" asp-route-sortState="@Model.PriceSort">Сортировка по Зарплате</a>
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <div class="row mt-5 container">
+        @foreach (var data in Model.VacancyViewModel)
+        {
+            
+            if (data.IsPublished)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Название компании: @data.NameOfCompany</h5>
+                            <h5 class="card-title">
+                                <a asp-action="AboutVacancy" asp-controller="Employer" asp-route-id="@data.Id">@data.Title</a>
+                            </h5>
+                            <p class="card-text">Зарплата: @data.Wages</p>
+                            <p class="card-text">Опыт работы от: @data.ExperienceYearsTo</p>
+                            <p class="card-text">Опыт работы до: @data.ExperienceYearsFrom</p>
+                            <p class="card-text">Последние обновление: @data.UpdateVacancyBid</p>
+                            <p class="card-text">Профессия: @data.SelectedCategoryName.Name</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @if (Model.PaginationViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index"
+           asp-route-currentPage="@(Model.PaginationViewModel.PageNumber - 1)"
+           class="btn btn-primary mt-5">
+            <i class="fas fa-chevron-left"></i>
+            Назад
+        </a>
+    }
+@if (Model.PaginationViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-currentPage="@(Model.PaginationViewModel.PageNumber + 1)"
+       class="btn btn-primary mt-5 ml-3">
+        Вперед
+        <i class="fas fa-chevron-right"></i>
+    </a>
+}
+}
+}
+@if (User.IsInRole("employer") && User.Identity.IsAuthenticated)
+{
+    @if (Model.ResumeViewModels.Any())
+    {
+        <div class="row mt-5 container">
+            @foreach (var data in @Model.ResumeViewModels)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                названия резюме @data.NameOfResume
+                            </h5>
+                            <p class="card-text">Запрошеная зарплата: @data.ExpectedSalary</p>
+                            <p class="card-text">электронная почта: @data.Email</p>
+                            <p class="card-text">Номер телефона: @data.Phone</p>
+                            <p class="card-text">
+                                @if (data.FacebookLink != null)
+                                {
+                                    <a href="@data.FacebookLink"><img src="/icon/facebook.png" alt="facebook" class="img-fluid icon-img ms-3"></a>
+                                }
+                                <a href="@data.TelegramLink"><img src="/icon/telegram.jpg" alt="telegram" class="img-fluid icon-img"></a>
+                                @if (data.LinkedInLink != null)
+                                {
+                                    <a href="@data.LinkedInLink"><img src="/icon/linkedin.png" alt="linkedin" class="img-fluid icon-img"></a>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

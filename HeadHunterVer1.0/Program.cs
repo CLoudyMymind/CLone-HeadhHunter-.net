@@ -44,6 +44,7 @@ builder.Services.AddScoped<MapTo>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEmployerService, EmployerService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -100,6 +101,6 @@ app.MapControllers(); // Используем верхнеуровневую р�
 app.MapControllerRoute(
     name: "download",
     pattern: "download",
-    defaults: new { controller = "Accounts", action = "DownloadPdf" });
+    defaults: new { controller = "Employee", action = "DownloadPdf" });
 
 app.Run();

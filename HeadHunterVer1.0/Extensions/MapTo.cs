@@ -1,6 +1,8 @@
 using HeadHunterVer1._0.Models;
+using HeadHunterVer1._0.Models.Employee;
 using HeadHunterVer1._0.Models.Employer;
 using HeadHunterVer1._0.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace HeadHunterVer1._0.Extensions;
 
@@ -23,14 +25,19 @@ public class MapTo
         };
         return newVacancy;
     }
-    public Vacancy MapToVacancyEdit(EditVacancyViewModel viewModel, Vacancy model,string id)
+    public Vacancy MapToVacancyEdit(EditVacancyViewModel viewModel, Vacancy model)
     {
-        model.CategoryId = viewModel.CategoryId;
-        model.Description = viewModel.Description;
-        model.ExperienceYearsFrom = viewModel.ExperienceYearsFrom;
-        model.ExperienceYearsTo = viewModel.ExperienceYearsTo;
-        model.Title = viewModel.Caption;
-        if (model.Wages != null)
+        if (!string.IsNullOrEmpty(viewModel.CategoryId))
+            model.CategoryId = viewModel.CategoryId;
+        if (!string.IsNullOrEmpty(viewModel.Description))
+            model.Description = viewModel.Description;
+        if (!string.IsNullOrEmpty(viewModel.ExperienceYearsFrom.ToString()))
+            model.ExperienceYearsFrom = viewModel.ExperienceYearsFrom;
+        if (!string.IsNullOrEmpty(viewModel.ExperienceYearsTo.ToString()))
+            model.ExperienceYearsTo = viewModel.ExperienceYearsTo;
+        if (!string.IsNullOrEmpty(viewModel.Caption))
+            model.Title = viewModel.Caption;
+        if (!string.IsNullOrEmpty(viewModel.Wages.ToString()))
             model.Wages = viewModel.Wages.Value;
         return model;
     }
@@ -49,10 +56,6 @@ public class MapTo
     {
         return new VacancyJobsCreateViewModel { CategoryViewModels = model };
     }
-    public EditVacancyViewModel MapToCategoryViewModelEdit(List<CategoryViewModel> model)
-    {
-        return new EditVacancyViewModel { CategoryViewModels = model };
-    }
 
 
     public VacancyViewModel MapVacancyToVacancyViewModel(Vacancy model)
@@ -68,7 +71,7 @@ public class MapTo
             UpdateVacancyBid = model.UpdateVacancyBid,
             Description = model.Description,
             Title = model.Title,
-            SelectedCategoryName =model.Category.Name,
+            SelectedCategoryName = model.Category,
         };
     }
     public EditVacancyViewModel MapVacancyToEditVacancyViewModel(Vacancy model, List<Category> categories)
@@ -88,7 +91,60 @@ public class MapTo
             CategoryViewModels = MapToListCategories(categories)
         };
     }
+    public List<ResumeViewModel> MapResumeToResumeViewModels(List<Resume> model)
+    {
+        return model.Select(resume => new ResumeViewModel
+        {
+            Id = resume.Id,
+            Employee = resume.Employee,
+            NameOfResume = resume.NameOfResume,
+            ExpectedSalary = resume.ExpectedSalary,
+            TelegramLink = resume.TelegramLink,
+            Email = resume.Email,
+            Phone = resume.Phone,
+            FacebookLink = resume.FacebookLink,
+            LinkedInLink = resume.LinkedInLink,
+            UpdatedAt = resume.UpdatedAt,
+            Category = resume.Category,
+            WorkExperiences = resume.WorkExperiences,
+            Courses = resume.Courses
+        }).ToList();
+    }
 
+    public  async Task<List<ResumeViewModel>> MapIQueryableResumeToResumeViewModel(IQueryable<Resume> resumeViewModel)
+    {
+        return await resumeViewModel.Select(u => new ResumeViewModel
+        {
+            Id = u.Id,
+            Employee = u.Employee,
+            NameOfResume = u.NameOfResume,
+            ExpectedSalary = u.ExpectedSalary,
+            TelegramLink = u.TelegramLink,
+            Email = u.Email,
+            Phone = u.Phone,
+            FacebookLink = u.FacebookLink,
+            LinkedInLink = u.LinkedInLink,
+            UpdatedAt = u.UpdatedAt,
+            Category = u.Category,
+            WorkExperiences = u.WorkExperiences,
+            Courses = u.Courses
+        }).ToListAsync();
+    }
+    public  async Task<List<VacancyViewModel>> MapIQueryableVacancyToVacancyViewModel(IQueryable<Vacancy> vacancyViewModel)
+    {
+        return await vacancyViewModel.Select(u => new VacancyViewModel
+        {
+            Title = u.Title,
+            NameOfCompany = u.User.UserName,
+            Description = u.Description,
+            SelectedCategoryName = u.Category,
+            UpdateVacancyBid = u.UpdateVacancyBid,
+            IsPublished = u.IsPublished,
+            ExperienceYearsTo = u.ExperienceYearsTo,
+            ExperienceYearsFrom = u.ExperienceYearsFrom,
+            Wages = u.Wages,
+            Id = u.Id
+        }).ToListAsync();
+    }
 
-   
 }
