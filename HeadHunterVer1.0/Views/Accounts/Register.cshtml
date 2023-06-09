@@ -26,8 +26,8 @@
             <input type="radio" id="employerRadioEmployer" asp-for="Role" value="employer" onclick="toggleNicknameField(true)"> Работодатель<br>
             <input type="radio" id="employerRadioEmployee" asp-for="Role" value="employee" onclick="toggleNicknameField(false)"> Работник<br>
         </div>
-        <div class="form-group nickname-group d-none">
-            <label id="nicknameLabel" asp-for="NameCompanyOrUser"></label>
+        <div class="form-group nickname-group ">
+            <label id="nicknameLabel" asp-for="NameCompanyOrUser">Введите данные</label>
             <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser">
             <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
         </div>
@@ -69,28 +69,21 @@
 </body>
 </html>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let employerRadio = document.getElementById("employerRadioEmployer");
-    let employeeRadio = document.getElementById("employerRadioEmployee");
-    let errorSpan = document.getElementById("roleError");
-
-    function validateRoleSelection() {
-        if (!(employerRadio.checked || employeeRadio.checked)) {
-            errorSpan.innerText = "Для ввода именни выберете роль (Ввод имени обязателен)";
-            errorSpan.classList.add("text-black", "alert", "alert-danger");
-            return false;
-        } else {
-            errorSpan.innerText = "";
-            errorSpan.classList.remove("text-black", "alert", "alert-danger");
-            return true;
-        }
-    }
-    function updateError() {
-        validateRoleSelection();
-    }
-    employerRadio.addEventListener("change", updateError);
-    employeeRadio.addEventListener("change", updateError);
-    validateRoleSelection();
-});
-
+ document.addEventListener("DOMContentLoaded", function() {
+                let employerRadio = document.getElementById("employerRadioEmployer");
+                let employeeRadio = document.getElementById("employerRadioEmployee");
+                let nameLabel = document.getElementById("nicknameLabel");
+        
+                function updateLabel() {
+                    if (employerRadio.checked) {
+                        nameLabel.innerText = "Введите имя компании:";
+                    } else if (employeeRadio.checked) {
+                        nameLabel.innerText = "Введите ваше имя:";
+                    }
+                }
+        
+                employerRadio.addEventListener("change", updateLabel);
+                employeeRadio.addEventListener("change", updateLabel);
+                updateLabel();
+            });
 </script>
