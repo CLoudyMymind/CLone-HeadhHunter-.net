@@ -18,10 +18,20 @@ namespace HeadHunterVer1._0.Services.DataSeed
             // категории работы 
             var categories = new[]
             {
-                new Category { Id = Guid.NewGuid().ToString(),Name = "FrontEnd developer" },
-                new Category { Id = Guid.NewGuid().ToString(), Name = "Project Manager" },
-                new Category {Id = Guid.NewGuid().ToString(),  Name = ".NET Developer" }
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Веб-дизайнер" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Архитектор" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Маркетолог" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Программист Python" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Финансовый аналитик" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Программист .net Asp Core" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Программист GoLang" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Программист Java" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Программист Php" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Инженер-строитель" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Технический писатель" },
+                new Category { Id = Guid.NewGuid().ToString(), Name = "Адвокат" }
             };
+
 
             context.Categories.AddRange(categories);
             context.SaveChanges();
