@@ -1,15 +1,8 @@
-﻿using System.Net.Mime;
-using System.Security.Claims;
-using HeadHunterVer1._0.Extensions;
-using HeadHunterVer1._0.Filters;
-using HeadHunterVer1._0.Models;
+﻿using HeadHunterVer1._0.Filters;
 using HeadHunterVer1._0.Services.Abstractions;
 using HeadHunterVer1._0.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-
 
 namespace HeadHunterVer1._0.Controllers;
 [CustomExceptionFilter]
@@ -18,42 +11,13 @@ public class AccountsController : Controller
 {
     private readonly IAccountService _accountService;
     private readonly IFileService _fileService;
-    private readonly IUserService _userService;
-    private readonly AccountExtensions _accountExtensions;
 
-    public AccountsController(IAccountService accountService,  IFileService fileService,
-        IUserService userService, AccountExtensions accountExtensions)
+    public AccountsController(IAccountService accountService, IFileService fileService)
     {
         _accountService = accountService;
         _fileService = fileService;
-        _userService = userService;
-        _accountExtensions = accountExtensions;
-    }
-    [AllowAnonymous]
-    [HttpGet]
-    public IActionResult Index()
-    {
-        if (!User.Identity.IsAuthenticated) 
-            return RedirectToAction("Login");
-        return View();
-    }
-
-    [HttpGet]
-
-    public async Task<IActionResult> DownloadPdf(string id)
-    {
-        try
-        {
-            return File( await _fileService.GeneratePdfAsync(id, HttpContext.User), 
-                _fileService.ContentTypeFile(), _fileService.GeneratePdfFileName(id));
-        }
-        catch (Exception e)
-        {
-            throw new Exception("Произошла ошибка при скачивание файла");
-        }
     }
     
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditProfile(EditAccountProfileViewModels model, string id, string? imageUrl)
@@ -74,11 +38,11 @@ public class AccountsController : Controller
             else
             {
                 foreach (var modelStateValue in ModelState.Values)
-                 foreach (var error in modelStateValue.Errors) 
-                     TempData["Error"] = error.ErrorMessage;
+                foreach (var error in modelStateValue.Errors)
+                    TempData["Error"] = error.ErrorMessage;
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            var role = HttpContext.User.IsInRole("employer") ? "Employer" : HttpContext.User.IsInRole("employee") ? "Employee" : throw new ArgumentOutOfRangeException("произошла ошибка при изменение данных");
+            var role = HttpContext.User.IsInRole("employer") ? "Employer" : HttpContext.User.IsInRole("employee") ? "Employee" : throw new Exception("произошла ошибка при изменение данных");
             return RedirectToAction("AboutProfile", role, new { Id = id });
         }
         catch (Exception e)
@@ -87,14 +51,13 @@ public class AccountsController : Controller
         }
     }
 
-    
-     
+
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Login(string? returnUrl)
     {
         var isAuthenticated = User.Identity.IsAuthenticated;
-        if (isAuthenticated) return RedirectToAction("Index", "Accounts");
+        if (isAuthenticated) return RedirectToAction("Index", "Home");
         return View(new LoginViewModel
         {
             ReturnUrl = returnUrl
@@ -120,7 +83,7 @@ public class AccountsController : Controller
                         if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                             return Redirect(model.ReturnUrl);
 
-                        return RedirectToAction("Index", "Accounts");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }
@@ -136,7 +99,7 @@ public class AccountsController : Controller
         await _accountService.SignOutUserAsync();
         return RedirectToAction("Login");
     }
-    
+
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Register()
@@ -159,12 +122,10 @@ public class AccountsController : Controller
         {
             TempData["successfully"] =
                 $"Вы зарегистрировались в приложение. Добро пожаловать, {model.NameCompanyOrUser}";
-            return RedirectToAction("index", "Accounts");
+            return RedirectToAction("index", "Home");
         }
         foreach (var error in result.Errors)
             ModelState.AddModelError(string.Empty, error.Description);
         return View(model);
     }
-
-
 }
