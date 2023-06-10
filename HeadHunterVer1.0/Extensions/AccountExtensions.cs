@@ -29,6 +29,7 @@ namespace HeadHunterVer1._0.Extensions
                 NameCompanyOrUser = user.UserName,
                 Role = role,
                 PhoneNumber = user.PhoneNumber,
+                userId = userData.Id,
                 //Сюда потом надо передать уже готовые резюме через сервис
                 Resumes = await _db.Resumes
                     .Include(r => r.WorkExperiences)

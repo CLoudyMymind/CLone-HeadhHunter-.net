@@ -20,7 +20,9 @@ public class EmployeeController : Controller
     public EmployeeController(
         IAccountService accountService, 
         ICategoryService categoryService, 
-        IEmployeeService employeeService, UserManager<User> userManager, IFileService fileService)
+        IEmployeeService employeeService, 
+        UserManager<User> userManager, 
+        IFileService fileService)
     {
         _accountService = accountService;
         _categoryService = categoryService;
@@ -28,6 +30,7 @@ public class EmployeeController : Controller
         _userManager = userManager;
         _fileService = fileService;
     }
+    
     [Authorize(Roles = "employee")]
     [HttpGet]
     public async Task<IActionResult> AboutProfile(string id)
@@ -36,6 +39,7 @@ public class EmployeeController : Controller
             return View(await _accountService.AboutProfileAsync(id , HttpContext.User));
         return NotFound();
     }
+    
     [Authorize(Roles = "employee")]
     [HttpGet]
     [Authorize]
@@ -43,6 +47,7 @@ public class EmployeeController : Controller
     {
         return View(new CreateResumeViewModel { CategoryViewModels = await _categoryService.GetAllCategoryViewModelListAsync() });
     }
+    
     [Authorize(Roles = "employee")]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -65,6 +70,7 @@ public class EmployeeController : Controller
 
         return NotFound();
     }
+    
     [HttpGet]
     public async Task<IActionResult> DownloadPdf(int id)
     {
@@ -77,5 +83,11 @@ public class EmployeeController : Controller
         {
             throw new Exception("Произошла ошибка при скачивание файла");
         }
+    }
+
+    [HttpGet]
+    public IActionResult EditResume(int id)
+    {
+        return View();
     }
 }
