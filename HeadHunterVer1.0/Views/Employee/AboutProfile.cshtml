@@ -37,7 +37,7 @@
         <div class="card" style="width: 100%;">
             <div class="card-body">
                 <p class="card-text card-title">
-                    <strong>Имя резюме:</strong> @resume.NameOfResume
+                    <strong>Имя резюме:</strong> <a asp-action="AboutResume" asp-route-id="@resume.Id">@resume.NameOfResume</a>
                 </p>
                 @if (resume.UpdatedAt is not null)
                 {
