@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunterVer1._0.ViewModels.ResumeViewModel?
+@inject UserManager<User> UserManager;
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/IconStyle.css" asp-append-version="true"/>
+
+
+<div class="row container">
+    <div class="col-md-12">
+        <div class="card mb-12">
+            <div class="card-body">
+                <h5 class="card-title">Заголовок:@Model.NameOfResume</h5>
+                <p class="card-text">Зарплата: @Model.ExpectedSalary</p>
+                <p class="card-text">Описание: @Model.Email</p>
+                <p class="card-text">Опыт работы от: @Model.Phone</p>
+                <p class="card-text">
+                    @if (Model.FacebookLink != null)
+                    {
+                        <a href="@Model.FacebookLink">
+                            <img src="/icon/facebook.png" alt="facebook" class="img-fluid icon-img ms-3">
+                        </a>
+                    }
+                    <a href="@Model.TelegramLink">
+                        <img src="/icon/telegram.jpg" alt="telegram" class="img-fluid icon-img">
+                    </a>
+                    @if (Model.LinkedInLink != null)
+                    {
+                        <a href="@Model.LinkedInLink">
+                            <img src="/icon/linkedin.png" alt="linkedin" class="img-fluid icon-img">
+                        </a>
+                    }
+                </p >
+                <p class="card-text">
+                    @if (Model.WorkExperiences!.Any())
+                    {
+                        <p>Опыт работы:</p>
+                        @foreach (var data in Model.WorkExperiences)
+                        {
+                            <div class=" card card-body">
+                                <p class="card-tex">Проработал: @data.YearsOfWork лет</p>
+                                <p class="card-tex">Должность: @data.Post</p>
+                                <p class="card-tex">Компания: @data.CompanyName </p>
+                                <p class="card-tex">Обязанности: @data.Responsibilities </p>
+                            </div>
+                        }
+                    }
+                    @if (Model.Courses!.Any())
+                    {
+                        <p>Прошел курсы:</p>
+                        @foreach (var data in Model.Courses)
+                        {
+                            <div class=" card card-body">
+                                <p class="card-tex">Название курсов: @data.CourseName лет</p>
+                                <p class="card-tex">Должность: @data.EducatedPost</p>
+                            </div>
+                        }
+                    }
+                </p>
+                @if (User.IsInRole("employee"))
+                {
+                    <a class="btn btn-outline-success" asp-area="" asp-controller="Employee" asp-action="DownloadPdf" asp-route-id="@Model.Id">Скачать данные</a>
+                    <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employee" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Вернуться обратно</a>
+                    @* <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="EditVacancy" asp-route-id="@Model.Id">Изменить данные вакансии</a> *@
+                    @* <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="DeleteVacancy" asp-route-id="@Model.Id">Удалить вакансию</a> *@
+                }
+                @if (User.IsInRole("employer"))
+                {
+                    <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">Вернуться обратно</a>
+                    <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">Предложить работу</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
