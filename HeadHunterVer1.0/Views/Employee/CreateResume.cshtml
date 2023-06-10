@@ -19,23 +19,32 @@
     </div>
     <div class="mb-3">
         <label class="fw-bold" asp-for="ExpectedSalary">Желаемая зарплата:</label>
-        <input type="number" class="form-control" asp-for="ExpectedSalary" id="nameOfVacancy" placeholder="Введите желаемую зарплату">
+        <input type="number" class="form-control" asp-for="ExpectedSalary" id="ExpectedSalary" placeholder="Введите желаемую зарплату">
         <span asp-validation-for="ExpectedSalary" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label class="fw-bold" asp-for="TelegramLink">Ссылка на телеграм:</label>
-        <input type="text" class="form-control" asp-for="TelegramLink" id="wages" placeholder="Введите ссылку на телеграм">
+        <input type="text" class="form-control" asp-for="TelegramLink" id="TelegramLink" placeholder="Введите ссылку на телеграм">
         <span asp-validation-for="TelegramLink" class="text-danger"></span>
     </div>
-
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="LinkedInLink">Ссылка на телеграм:</label>
+        <input type="text" class="form-control" asp-for="LinkedInLink" id="LinkedInLink" placeholder="Введите ссылку на линкдин">
+        <span asp-validation-for="LinkedInLink" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="fw-bold" asp-for="FacebookLink">Ссылка на Фейсбук:</label>
+        <input type="text" class="form-control" asp-for="FacebookLink" id="FacebookLink" placeholder="Введите ссылку на фейсбук">
+        <span asp-validation-for="FacebookLink" class="text-danger"></span>
+    </div>
     <div class="mb-3">
         <label class="fw-bold" asp-for="Email">Электронная почта:</label>
-        <input type="number" class="form-control" asp-for="Email" id="experienceYearsFrom" placeholder="Введите свою электронную почту">
+        <input type="email" class="form-control" asp-for="Email" id="Email" placeholder="Введите свою электронную почту">
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label class="fw-bold" asp-for="Phone">Номер телефона:</label>
-        <input type="number" class="form-control" asp-for="Phone" id="experienceYearsFrom" placeholder="Введите свой номер телефона">
+        <input type="text" class="form-control" asp-for="Phone" id="phone" placeholder="Введите свой номер телефона">
         <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
     <div class="mb-3">
@@ -56,7 +65,7 @@
 
         <span asp-validation-for="CategoryViewModels" class="text-danger"></span>
     </div>
-    
+
     <div id="JobExp"></div>
     <div id="CourseExp"></div>
     <button type="button" class="btn btn-primary" id="addJobExperience">Добавить опыт работы</button>
