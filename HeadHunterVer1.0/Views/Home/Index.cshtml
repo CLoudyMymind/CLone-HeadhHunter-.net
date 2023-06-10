@@ -48,8 +48,8 @@
                                 <a asp-action="AboutVacancy" asp-controller="Employer" asp-route-id="@data.Id">@data.Title</a>
                             </h5>
                             <p class="card-text">Зарплата: @data.Wages</p>
-                            <p class="card-text">Опыт работы от: @data.ExperienceYearsTo</p>
-                            <p class="card-text">Опыт работы до: @data.ExperienceYearsFrom</p>
+                            <p class="card-text">Опыт работы от: @data.ExperienceYearsFrom</p>
+                            <p class="card-text">Опыт работы до: @data.ExperienceYearsTo</p>
                             <p class="card-text">Последние обновление: @data.UpdateVacancyBid</p>
                             <p class="card-text">Профессия: @data.SelectedCategoryName.Name</p>
                         </div>
@@ -84,7 +84,7 @@
     @if (Model.ResumeViewModels.Any())
     {
         <div class="row mt-5 container">
-            @foreach (var data in @Model.ResumeViewModels)
+            @foreach (var data in Model.ResumeViewModels)
             {
                 <div class="col-md-3">
                     <div class="card mb-4">
@@ -93,7 +93,7 @@
                                 названия резюме @data.NameOfResume
                             </h5>
                             <p class="card-text">Запрошеная зарплата: @data.ExpectedSalary</p>
-                            <p class="card-text">электронная почта: @data.Email</p>
+                            <p class="card-text">Электронная почта: @data.Email</p>
                             <p class="card-text">Номер телефона: @data.Phone</p>
                             <p class="card-text">
                                 @if (data.FacebookLink != null)

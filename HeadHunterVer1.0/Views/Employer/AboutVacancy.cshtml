@@ -14,8 +14,8 @@
                 <h5 class="card-title">Заголовок:@Model.Title</h5>
                 <p class="card-text">Зарплата: @Model.Wages</p>
                 <p class="card-text">Описание: @Model.Description</p>
-                <p class="card-text">Опыт работы от: @Model.ExperienceYearsTo</p>
-                <p class="card-text">Опыт работы до: @Model.ExperienceYearsFrom</p>
+                <p class="card-text">Опыт работы от: @Model.ExperienceYearsFrom</p>
+                <p class="card-text">Опыт работы до: @Model.ExperienceYearsTo</p>
                 <p class="card-text">Категория профессии: @Model.SelectedCategoryName.Name</p>
                 @if (User.IsInRole("employer"))
                 {
