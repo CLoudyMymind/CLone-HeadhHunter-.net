@@ -85,9 +85,9 @@ public class EmployeeController : Controller
         }
     }
 
-    [HttpGet]
-    public IActionResult EditResume(int id)
-    {
-        return View();
-    }
+    // [HttpGet]
+    // public IActionResult EditResume(int id)
+    // {
+    //     return View();
+    // }
 }

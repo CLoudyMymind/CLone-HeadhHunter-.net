@@ -13,9 +13,8 @@ namespace HeadHunterVer1._0.Services.DataSeed
                 serviceProvider.GetRequiredService<DbContextOptions<HeadHunterContext>>());
             if (context.Categories.Any())
             {
-                return; // если роли есть то они не создаются
+                return; 
             }
-            // категории работы 
             var categories = new[]
             {
                 new Category { Id = Guid.NewGuid().ToString(), Name = "Веб-дизайнер" },
@@ -31,8 +30,6 @@ namespace HeadHunterVer1._0.Services.DataSeed
                 new Category { Id = Guid.NewGuid().ToString(), Name = "Технический писатель" },
                 new Category { Id = Guid.NewGuid().ToString(), Name = "Адвокат" }
             };
-
-
             context.Categories.AddRange(categories);
             context.SaveChanges();
         }

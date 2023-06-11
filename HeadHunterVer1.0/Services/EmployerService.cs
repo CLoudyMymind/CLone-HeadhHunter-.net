@@ -29,10 +29,14 @@ public class EmployerService : IEmployerService
 
     public async Task CreateVacancyAsync(VacancyJobsCreateViewModel model, ClaimsPrincipal user)
     {
-        var loggedInUser = await _userManager.GetUserAsync(user);
-        _ = loggedInUser != null
-            ? (await _headHunterContext.Vacancies.AddAsync(_mapTo.MapToVacancyCreate(model, loggedInUser.Id)), await _headHunterContext.SaveChangesAsync())
-            : throw new Exception("Произошла ошибка при создании задачи");
+        var loggedInUser = await _userManager.GetUserAsync(user).ConfigureAwait(false);
+        if (loggedInUser != null)
+        {
+            await _headHunterContext.Vacancies.AddAsync(_mapTo.MapToVacancyCreate(model, loggedInUser.Id)).ConfigureAwait(false);
+            await _headHunterContext.SaveChangesAsync().ConfigureAwait(false);
+        }
+        else
+            throw new Exception("Произошла ошибка при создании задачи");
     }
 
 
@@ -40,13 +44,14 @@ public class EmployerService : IEmployerService
     public async Task<List<VacancyViewModel>> GetALlVacancyInUserAsync(ClaimsPrincipal user)
     {
         var dataUser = _userManager.GetUserId(user);
+        if (dataUser == null) throw new Exception("Произошла ошибка попробуйте позже");
         var vacancyViewModels = await _headHunterContext.Vacancies
             .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Where(v => v.UserId == dataUser)
             .Select(v => _mapTo.MapVacancyToVacancyViewModel(v)).ToListAsync();
         return vacancyViewModels;
     }
 
-    public async Task<List<VacancyViewModel>> GetListVacancy()
+    public async Task<List<VacancyViewModel>> GetListVacancyAsync()
     {
         var vacancyViewModels = await _headHunterContext.Vacancies
             .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Select(v => _mapTo.MapVacancyToVacancyViewModel(v)).ToListAsync();
@@ -60,9 +65,10 @@ public class EmployerService : IEmployerService
         
     }
 
-    public async Task UpdateDate(string id )
+    public async Task UpdateDateAsync(string id )
     {
       var data = await GetByIdVacancyAsync(id);
+      if (data == null) throw new Exception("Произошла ошибка при создании задачи");
       data.UpdateVacancyBid = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("F"));
       _headHunterContext.Vacancies.Update(data);
       await _headHunterContext.SaveChangesAsync();
@@ -73,6 +79,7 @@ public class EmployerService : IEmployerService
     public async Task UpdatePublishStatusAsync(string id,  bool isPublished)
     {
         var data = await GetByIdVacancyAsync(id);
+        if (data == null) throw new Exception("Произошла ошибка ");
         data.IsPublished = isPublished;
         _headHunterContext.Vacancies.Update(data);
         await _headHunterContext.SaveChangesAsync();
@@ -88,7 +95,7 @@ public class EmployerService : IEmployerService
             : ( _headHunterContext.Vacancies.Update(_mapTo.MapToVacancyEdit(model,await GetByIdVacancyAsync(model.Id) ))
                 , await _headHunterContext.SaveChangesAsync());
     }
-    public async Task<bool> DeleteVacancy(string id)
+    public async Task<bool> DeleteVacancyAsync(string id)
     {
         var data =  await _headHunterContext.Vacancies.FirstOrDefaultAsync(v => v.Id == id);
         if (data == null) return false;

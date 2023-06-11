@@ -90,7 +90,7 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">
-                                названия резюме @data.NameOfResume
+                                <a asp-action="AboutResume" asp-controller="Employee" asp-route-id="@data.Id">названия резюме @data.NameOfResume</a>
                             </h5>
                             <p class="card-text">Запрошеная зарплата: @data.ExpectedSalary</p>
                             <p class="card-text">Электронная почта: @data.Email</p>

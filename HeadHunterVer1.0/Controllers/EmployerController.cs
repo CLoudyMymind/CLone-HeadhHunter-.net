@@ -69,7 +69,7 @@ public class EmployerController : Controller
     public async Task<IActionResult> UpdateVacancyDatePublished(string id)
     {
         if (!HttpContext.User.IsInRole("employer")) return NotFound();
-        await _employerService.UpdateDate(id);
+        await _employerService.UpdateDateAsync(id);
         return RedirectToAction("AboutProfile");
     }
     [Authorize(Roles = "employer")]
@@ -112,7 +112,7 @@ public class EmployerController : Controller
     [HttpGet]
     public async Task<IActionResult> DeleteVacancy(string? id)
     {
-        if (id == null && await _employerService.DeleteVacancy(id) == false)
+        if (id == null && await _employerService.DeleteVacancyAsync(id) == false)
         {
             TempData["Error"] = "Ошибка при удаление";
             return RedirectToAction("AboutProfile");

@@ -63,8 +63,6 @@
                 {
                     <a class="btn btn-outline-success" asp-area="" asp-controller="Employee" asp-action="DownloadPdf" asp-route-id="@Model.Id">Скачать данные</a>
                     <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employee" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Вернуться обратно</a>
-                    @* <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="EditVacancy" asp-route-id="@Model.Id">Изменить данные вакансии</a> *@
-                    @* <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Employer" asp-action="DeleteVacancy" asp-route-id="@Model.Id">Удалить вакансию</a> *@
                 }
                 @if (User.IsInRole("employer"))
                 {

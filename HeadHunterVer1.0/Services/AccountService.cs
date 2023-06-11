@@ -28,37 +28,44 @@ public class AccountService : IAccountService
     public async Task<IdentityResult> Edit(EditAccountProfileViewModels model, string id, ClaimsPrincipal user,
         string? imagePath)
     {
-        
-        var userData = await _userService.UserSearchAsync(id, user);
-        if (userData is null)
-            throw new Exception("Произошла ошибка обратите в поддержку)");
-        userData.UserName =
-            !string.IsNullOrEmpty(model.NameCompanyOrUser) ? model.NameCompanyOrUser : userData.UserName;
-        userData.NormalizedUserName = !string.IsNullOrEmpty(model.NameCompanyOrUser)
-            ? model.NameCompanyOrUser.ToUpper()
-            : userData.NormalizedUserName;
-        userData.Email = !string.IsNullOrEmpty(model.Email) ? model.Email : userData.Email;
-        userData.NormalizedEmail =
-            !string.IsNullOrEmpty(model.Email) ? model.Email.ToUpper() : userData.NormalizedEmail;
-        userData.PathFile = imagePath ?? userData.PathFile;
-        if (!string.IsNullOrEmpty(model.PhoneNumber))
+
+        try
         {
-            if (model.PhoneNumber != userData.PhoneNumber)
+            var userData = await _userService.UserSearchAsync(id, user);
+            if (userData is null)
+                throw new Exception("Произошла ошибка обратите в поддержку)");
+            userData.UserName =
+                !string.IsNullOrEmpty(model.NameCompanyOrUser) ? model.NameCompanyOrUser : userData.UserName;
+            userData.NormalizedUserName = !string.IsNullOrEmpty(model.NameCompanyOrUser)
+                ? model.NameCompanyOrUser.ToUpper()
+                : userData.NormalizedUserName;
+            userData.Email = !string.IsNullOrEmpty(model.Email) ? model.Email : userData.Email;
+            userData.NormalizedEmail =
+                !string.IsNullOrEmpty(model.Email) ? model.Email.ToUpper() : userData.NormalizedEmail;
+            userData.PathFile = imagePath ?? userData.PathFile;
+            if (!string.IsNullOrEmpty(model.PhoneNumber))
             {
-                var identityError = new IdentityError
+                if (model.PhoneNumber != userData.PhoneNumber)
                 {
-                    Code = "DuplicatePhoneNumber",
-                    Description = "Номер который вы вводите уже кем то занят попробуйте другой"
-                };
-                return IdentityResult.Failed(identityError);
+                    var identityError = new IdentityError
+                    {
+                        Code = "DuplicatePhoneNumber",
+                        Description = "Номер который вы вводите уже кем то занят попробуйте другой"
+                    };
+                    return IdentityResult.Failed(identityError);
+                }
+                userData.PhoneNumber = model.PhoneNumber;
             }
-            userData.PhoneNumber = model.PhoneNumber;
+            if (string.IsNullOrEmpty(model.OldPassword) && string.IsNullOrEmpty(model.NewPassword))
+                return await _userManager.UpdateAsync(userData);
+            var changePasswordResult =
+                await _userManager.ChangePasswordAsync(userData, model.OldPassword, model.NewPassword);
+            return !changePasswordResult.Succeeded ? changePasswordResult : await _userManager.UpdateAsync(userData);
         }
-        if (string.IsNullOrEmpty(model.OldPassword) && string.IsNullOrEmpty(model.NewPassword))
-            return await _userManager.UpdateAsync(userData);
-        var changePasswordResult =
-            await _userManager.ChangePasswordAsync(userData, model.OldPassword, model.NewPassword);
-        return !changePasswordResult.Succeeded ? changePasswordResult : await _userManager.UpdateAsync(userData);
+        catch (Exception e)
+        {
+            throw new Exception($"Произошла ошибка при смене данных {e}");
+        }
     }
 
     public async Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user)
@@ -101,39 +108,60 @@ public class AccountService : IAccountService
 
     public async Task<bool> IsUserExistsAsync(LoginViewModel model)
     {
-        var user = await _userManager.FindByNameAsync(model.Name) ?? await _userManager.FindByEmailAsync(model.Name) ?? await _userService.CheckPhoneNumberAsync(model.Name);
-        return user != null;
+        try
+        {
+            var user = await _userManager.FindByNameAsync(model.Name) ?? await _userManager.FindByEmailAsync(model.Name) ?? await _userService.CheckPhoneNumberAsync(model.Name);
+            return user != null;
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Произошла ошибка {e}");
+        }
     }
 
     public async Task<bool> CheckUserPasswordAsync(LoginViewModel model, string password)
     {
-        if (model.Name == null) return false;
-        var user = await _userManager.FindByNameAsync(model.Name)
-                   ?? await _userManager.FindByEmailAsync(model.Name)
-                   ?? await _userService.CheckPhoneNumberAsync(model.Name);
-        if (user == null) return false;
-        var passwordValid = await _userManager.CheckPasswordAsync(user, password);
-        return passwordValid;
+        try
+        {
+            if (model.Name == null) return false;
+            var user = await _userManager.FindByNameAsync(model.Name)
+                       ?? await _userManager.FindByEmailAsync(model.Name)
+                       ?? await _userService.CheckPhoneNumberAsync(model.Name);
+            if (user == null) return false;
+            var passwordValid = await _userManager.CheckPasswordAsync(user, password);
+            return passwordValid;
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Произошла ошибка при проверки пароля {e}");
+        }
     }
 
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model, string imgPath)
     {
-        var user = _accountExtensions.UserModelExtensions(model, imgPath);
-        var phoneNumberExists = await _userService.CheckPhoneNumberAsync(model.PhoneNumber);
-        if (phoneNumberExists != null)
+        try
         {
-            var identityError = new IdentityError
+            var user = _accountExtensions.UserModelExtensions(model, imgPath);
+            var phoneNumberExists = await _userService.CheckPhoneNumberAsync(model.PhoneNumber);
+            if (phoneNumberExists != null)
             {
-                Code = "DuplicatePhoneNumber",
-                Description = "Номер который вы вводите уже кем то занят попробуйте другой"
-            };
-            return IdentityResult.Failed(identityError);
+                var identityError = new IdentityError
+                {
+                    Code = "DuplicatePhoneNumber",
+                    Description = "Номер который вы вводите уже кем то занят попробуйте другой"
+                };
+                return IdentityResult.Failed(identityError);
+            }
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded) return result;
+            await _userManager.AddToRoleAsync(user, model.Role);
+            await _signInManager.SignInAsync(user, false);
+            return result;
         }
-        var result = await _userManager.CreateAsync(user, model.Password);
-        if (!result.Succeeded) return result;
-        await _userManager.AddToRoleAsync(user, model.Role);
-        await _signInManager.SignInAsync(user, false);
-        return result;
+        catch (Exception e)
+        {
+            throw new Exception($"Произошел ошибка при регистрации пользователя {e}");
+        }
     }
 
 }
