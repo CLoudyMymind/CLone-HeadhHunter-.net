@@ -10,50 +10,59 @@
     <title>@ViewData["Title"] - HeadHunterVer1._0</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
 </head>
 <body>
 <header>
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-50 h-50" src="/icon/min-hh-red.png"/></a>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between text-light">
-                <ul class="navbar-nav flex-grow-1">
-                    @if (User.Identity.IsAuthenticated)
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("employer"))
                     {
-                        @if (User.IsInRole("employer"))
-                        {
-                            <li>
-                                <a class="nav-link text-light" asp-area="" asp-controller="Employer" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("employee"))
-                        {
-                            <li>
-                                <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
-                            </li>
-                        }
-                        <li>
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Главная страница</a>
-                        </li>
-                        <li class="nav-item ms-auto">
-                            <form asp-action="LogOff" asp-controller="Accounts" method="post" asp-antiforgery="true">
-                                <button type="submit" class="btn btn-outline-info">Выйти</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item ms-5">
-                            <a class="nav-link text-light btn btn-outline-info me-2" asp-area="" asp-controller="Accounts" asp-action="Register">Зарегистрироваться</a>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light btn btn-outline-info ms-2" asp-area="" asp-controller="Accounts" asp-action="Login">Войти в Айти</a>
+                            <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="GetAllListApplicationResponse">Список откликов</a>
                         </li>
                     }
-                </ul>
-            </div>
+                    @if (User.IsInRole("employee"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="AboutProfile" asp-route-id="@UserManager.GetUserId(User)">Личный кабинет</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="GetAllListApplicationResponse">Список откликов</a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Главная страница</a>
+                    </li>
+                    <li class="nav-item ml-auto">
+                        <form asp-action="LogOff" asp-controller="Accounts" method="post" asp-antiforgery="true">
+                            <button type="submit" class="btn btn-outline-info">Выйти</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item ml-2">
+                        <a class="nav-link btn btn-outline-info" asp-area="" asp-controller="Accounts" asp-action="Register">Зарегистрироваться</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-info ml-2" asp-area="" asp-controller="Accounts" asp-action="Login">Войти в Айти</a>
+                    </li>
+                }
+            </ul>
         </div>
     </nav>
+
 </header>
 <div class="container">
     <main role="main" class="pb-3">
@@ -73,3 +82,6 @@
 @await RenderSectionAsync("Scripts", false)
 </body>
 </html>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+

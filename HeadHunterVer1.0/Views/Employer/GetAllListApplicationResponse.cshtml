@@ -1,0 +1,78 @@
+﻿@model List<HeadHunterVer1._0.ViewModels.ApplicationViewModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+    <link rel="stylesheet" href="~/css/IconStyle.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/ApplicationCss.css" asp-append-version="true"/>
+<div class="container">
+    <div class="row">
+        @foreach (var data in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Имя Отправителя: @data.ResumeViewModel.Employee.UserName</h5>
+                        <h5 class="card-title">
+                            <a asp-action="aboutProfile" asp-controller="Employee" asp-route-id="@data.ResumeViewModel.Employee.Id" asp-route-checkInRoleIsEmployer="checkInRoleIsEmployer">@data.ResumeViewModel.NameOfResume</a>
+                        </h5>
+                        <p class="card-text">Зарплата: @data.ResumeViewModel.ExpectedSalary</p>
+                        <p class="card-text">Почта: @data.ResumeViewModel.Email</p>
+                        <p class="card-text">Номер: @data.ResumeViewModel.Phone</p>
+                        <p class="card-text">
+                            @if (data.ResumeViewModel.FacebookLink != null)
+                            {
+                                <a href="@data.ResumeViewModel.FacebookLink">
+                                    <img src="/icon/facebook.png" alt="facebook" class="img-fluid icon-img ms-3">
+                                </a>
+                            }
+                            <a href="@data.ResumeViewModel.TelegramLink">
+                                <img src="/icon/telegram.jpg" alt="telegram" class="img-fluid icon-img">
+                            </a>
+                            @if (data.ResumeViewModel.LinkedInLink != null)
+                            {
+                                <a href="@data.ResumeViewModel.LinkedInLink">
+                                    <img src="/icon/linkedin.png" alt="linkedin" class="img-fluid icon-img">
+                                </a>
+                            }
+                        </p>
+                        <div class="card-text">
+                            @if (data.ResumeViewModel.WorkExperiences.Any())
+                            {
+                                <div class="work-experience-card">
+                                    <p class="card-title">Последний опыт работы:</p>
+                                    @foreach (var dataInWorkExperiences in data.ResumeViewModel.WorkExperiences)
+                                    {
+                                        <div class="card-text">
+                                            <p>Название компании: @dataInWorkExperiences.CompanyName</p>
+                                            <p>Стаж: @dataInWorkExperiences.YearsOfWork</p>
+                                            <p>Обязанности: @dataInWorkExperiences.Responsibilities</p>
+                                            <p>Должность: @dataInWorkExperiences.Post</p>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="card-text">
+                            @if (data.ResumeViewModel.Courses.Any())
+                            {
+                                <div class="course-card">
+                                    <p class="card-title">Прошел курсы:</p>
+                                    @foreach (var dataInCourses in data.ResumeViewModel.Courses)
+                                    {
+                                        <div class="card-text">
+                                            <p>Название курсов: @dataInCourses.CourseName</p>
+                                            <p>Специализация курсов: @dataInCourses.EducatedPost</p>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
