@@ -22,7 +22,7 @@ public class FileService : IFileService
         if (avatarFile is null) return;
         var allowedMimeTypes = new[] { "image/jpeg", "image/jpg", "image/png", "image/webp" };
         var mimeType = MimeTypes.GetMimeType(Path.GetExtension(avatarFile.FileName));
-        if (!allowedMimeTypes.Contains(mimeType)) throw new Exception("Invalid avatar file format.");
+        if (!allowedMimeTypes.Contains(mimeType)) throw new Exception("Не валидный формат файла поддерживаются только ( image/jpeg, image/jpg, image/png, image/webp  ) ");
     }
 
     private async Task<string> SaveAvatarFile(IFormFile avatarFile)
@@ -41,18 +41,21 @@ public class FileService : IFileService
     {
         ValidateAvatarFile(model.AvatarFile);
         if (model.AvatarFile is not null) return await SaveAvatarFile(model.AvatarFile);
-        var defaultImagePath =
-            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "StandartPhoto", "standart.png");
-        var defaultImageBytes = await File.ReadAllBytesAsync(defaultImagePath);
-        model.AvatarFile = new FormFile(new MemoryStream(defaultImageBytes), 0, defaultImageBytes.Length,
+       var data = await DefaultPhoto();
+        return await SaveAvatarFile(data);
+    }
+
+    private async Task<IFormFile> DefaultPhoto()
+    { 
+        var defaultImageBytes = await File.ReadAllBytesAsync(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "StandartPhoto", "standart.png"));
+       var model = new FormFile(new MemoryStream(defaultImageBytes), 0, defaultImageBytes.Length,
             "standart.png", "standart.png")
         {
             Headers = new HeaderDictionary(),
             ContentType = "image/png"
         };
-        return await SaveAvatarFile(model.AvatarFile);
+        return model;
     }
-
     public async Task<string> FileEditAsync(EditAccountProfileViewModels model)
     {
         ValidateAvatarFile(model.AvatarFile);
@@ -150,7 +153,7 @@ public class FileService : IFileService
         return output.ToArray();
     }
 
-    throw new Exception("An error occurred while generating the PDF file");
+    throw new Exception("Ошибка при генерации файла");
 }
 
 
