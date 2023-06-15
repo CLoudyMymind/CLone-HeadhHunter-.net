@@ -11,7 +11,7 @@ public interface IEmployerService
     Task EditVacancyAsync(EditVacancyViewModel model , ClaimsPrincipal user );
     Task<EditVacancyViewModel>   EditVacancyAsync(string id);
     Task<List<VacancyViewModel>> GetALlVacancyInUserAsync(ClaimsPrincipal user);
-    Task<VacancyViewModel> AboutVacancyAsync(string id);
+    Task<VacancyViewModel> AboutVacancyAsync(string id, ClaimsPrincipal user);
     Task UpdateDateAsync(string id);
     public  Task UpdatePublishStatusAsync(string id, bool isPublished);
     

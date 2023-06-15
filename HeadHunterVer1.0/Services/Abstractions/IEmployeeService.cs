@@ -8,5 +8,6 @@ public interface IEmployeeService
 {
     Task<List<ResumeViewModel>> GetAllResume();
     Task CreateResumeAsync(CreateResumeViewModel viewModel, ClaimsPrincipal user);
+    Task<List<ResumeViewModel>> GetAllResumeInUser(ClaimsPrincipal user);
 
 }
