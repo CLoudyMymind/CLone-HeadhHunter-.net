@@ -45,6 +45,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEmployerService, EmployerService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IResponseApplicationService, ResponseApplicationService>();
+
 
 
 builder.Services.Configure<IdentityOptions>(options =>
