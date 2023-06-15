@@ -4,7 +4,7 @@
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
-    <link rel="stylesheet" href="~/css/IconStyle.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/IconStyle.css" asp-append-version="true"/>
 
 @if (User.IsInRole("employee") && User.Identity.IsAuthenticated)
 {
@@ -37,7 +37,6 @@
     <div class="row mt-5 container">
         @foreach (var data in Model.VacancyViewModel)
         {
-            
             if (data.IsPublished)
             {
                 <div class="col-md-3">
@@ -45,13 +44,14 @@
                         <div class="card-body">
                             <h5 class="card-title">Название компании: @data.NameOfCompany</h5>
                             <h5 class="card-title">
-                                <a asp-action="AboutVacancy" asp-controller="Employer" asp-route-id="@data.Id">@data.Title</a>
+                              Должность:  <a asp-action="AboutVacancy" asp-controller="Employer" asp-route-id="@data.Id">@data.Title</a>
                             </h5>
                             <p class="card-text">Зарплата: @data.Wages</p>
                             <p class="card-text">Опыт работы от: @data.ExperienceYearsFrom</p>
                             <p class="card-text">Опыт работы до: @data.ExperienceYearsTo</p>
                             <p class="card-text">Последние обновление: @data.UpdateVacancyBid</p>
                             <p class="card-text">Профессия: @data.SelectedCategoryName.Name</p>
+                               <a asp-action="AboutVacancy" class="btn-outline-success btn" asp-controller="Employer" asp-route-id="@data.Id">перейти в профиль работодателя</a>
                         </div>
                     </div>
                 </div>
@@ -83,6 +83,25 @@
 {
     @if (Model.ResumeViewModels.Any())
     {
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <form asp-action="Index" method="get" class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input class="form-control mr-sm-2" type="search" placeholder="по имени" name="Name" aria-label="Поиск">
+                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Поиск</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">
+                    <a asp-action="Index" asp-route-sortState="@Model.CategorySort">Сортировка по Категории</a>
+                </th>
+            </tr>
+            </thead>
+        </table>
         <div class="row mt-5 container">
             @foreach (var data in Model.ResumeViewModels)
             {
@@ -90,7 +109,7 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <a asp-action="AboutResume" asp-controller="Employee" asp-route-id="@data.Id">названия резюме @data.NameOfResume</a>
+                                <span>название резюме: <a asp-action="AboutResume" asp-controller="Employee" asp-route-id="@data.Id">@data.NameOfResume</a></span>
                             </h5>
                             <p class="card-text">Запрошеная зарплата: @data.ExpectedSalary</p>
                             <p class="card-text">Электронная почта: @data.Email</p>
@@ -98,15 +117,23 @@
                             <p class="card-text">
                                 @if (data.FacebookLink != null)
                                 {
-                                    <a href="@data.FacebookLink"><img src="/icon/facebook.png" alt="facebook" class="img-fluid icon-img ms-3"></a>
+                                    <a href="@data.FacebookLink">
+                                        <img src="/icon/facebook.png" alt="facebook" class="img-fluid icon-img ms-3">
+                                    </a>
                                 }
-                                <a href="@data.TelegramLink"><img src="/icon/telegram.jpg" alt="telegram" class="img-fluid icon-img"></a>
+                                <a href="@data.TelegramLink">
+                                    <img src="/icon/telegram.jpg" alt="telegram" class="img-fluid icon-img">
+                                </a>
                                 @if (data.LinkedInLink != null)
                                 {
-                                    <a href="@data.LinkedInLink"><img src="/icon/linkedin.png" alt="linkedin" class="img-fluid icon-img"></a>
+                                    <a href="@data.LinkedInLink">
+                                        <img src="/icon/linkedin.png" alt="linkedin" class="img-fluid icon-img">
+                                    </a>
                                 }
                             </p>
+                            <a asp-action="AboutResume" class ="btn-outline-success btn" asp-controller="Employee" asp-route-id="@data.Id">Перейти в профиль соискателя</a>
                         </div>
+
                     </div>
                 </div>
             }
