@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunterVer1._0.ViewModels.MessageViewModel?
+@inject UserManager<User> UserManager;
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<label>Введите текст</label>
+<input asp-for="@Model.MessageText"/>
+
