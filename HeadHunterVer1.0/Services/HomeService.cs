@@ -37,7 +37,8 @@ public class HomeService : IHomeService
             .OrderByDescending(r => r.UpdatedAt);
     }
 
-    public async Task<HomeIndexViewModel> FilterProd(ClaimsPrincipal user, SearchFilterViewModel searchFilter, SortState sortState = SortState.CategoryAsc,
+    public async Task<HomeIndexViewModel> FilterProd(ClaimsPrincipal user, SearchFilterViewModel searchFilter,
+        SortState sortState = SortState.CategoryAsc,
         int currentPage = 1)
     {
         if (user.IsInRole("employee"))
@@ -46,14 +47,17 @@ public class HomeService : IHomeService
             if (searchFilter.Name != null)
             {
                 var data = vacancyViewModel
-                    .WhereIf(!string.IsNullOrEmpty(searchFilter.Name), u => u.Title.ToLower().Contains(searchFilter.Name.ToLower()));
+                    .WhereIf(!string.IsNullOrEmpty(searchFilter.Name),
+                        u => u.Title.ToLower().Contains(searchFilter.Name.ToLower()));
                 if (!data.Any())
                     data = GetQueryableVacancy()
-                        .WhereIf(!string.IsNullOrEmpty(searchFilter.Name), u => u.Category.Name.ToLower().Contains(searchFilter.Name.ToLower()));
+                        .WhereIf(!string.IsNullOrEmpty(searchFilter.Name),
+                            u => u.Category.Name.ToLower().Contains(searchFilter.Name.ToLower()));
                 vacancyViewModel = data;
             }
+
             vacancyViewModel = sortState switch
-            { 
+            {
                 SortState.CategoryAsc => vacancyViewModel.OrderBy(x => x.Category.Name),
                 SortState.CategodyDesc => vacancyViewModel.OrderByDescending(x => x.Category.Name),
                 SortState.PriceAsc => vacancyViewModel.OrderBy(x => x.Wages),
@@ -68,7 +72,7 @@ public class HomeService : IHomeService
                 VacancyViewModel = await _mapTo.MapIQueryableVacancyToVacancyViewModel(vacancyViewModel),
                 CategorySort = sortState is SortState.CategoryAsc ? SortState.CategodyDesc : SortState.CategoryAsc,
                 PriceSort = sortState is SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc,
-                PaginationViewModel = new PaginationViewModel(count, currentPage, pageSize),
+                PaginationViewModel = new PaginationViewModel(count, currentPage, pageSize)
             };
             return model;
         }
@@ -76,6 +80,19 @@ public class HomeService : IHomeService
         if (user.IsInRole("employer"))
         {
             var resumeViewModel = GetQueryableResume();
+            if (searchFilter.Name != null)
+            {
+                var data = resumeViewModel
+                    .WhereIf(!string.IsNullOrEmpty(searchFilter.Name),
+                        u => u.NameOfResume.ToLower().Contains(searchFilter.Name.ToLower()));
+                if (!data.Any())
+                    data = GetQueryableResume()
+                        .WhereIf(!string.IsNullOrEmpty(searchFilter.Name),
+                            u => u.Category.Name.ToLower().Contains(searchFilter.Name.ToLower()));
+                resumeViewModel = data;
+
+            }
+
             resumeViewModel = sortState switch
             {
                 SortState.CategoryAsc => resumeViewModel.OrderBy(x => x.Category.Name),
@@ -91,12 +108,11 @@ public class HomeService : IHomeService
                 ResumeViewModels = await _mapTo.MapIQueryableResumeToResumeViewModel(resumeViewModel),
                 CategorySort = sortState is SortState.CategoryAsc ? SortState.CategodyDesc : SortState.CategoryAsc,
                 PriceSort = sortState is SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc,
-                PaginationViewModel = new PaginationViewModel(count, currentPage, pageSize),
+                PaginationViewModel = new PaginationViewModel(count, currentPage, pageSize)
             };
             return model;
-            
         }
 
-        throw new Exception("Error");
+        throw new Exception("Ошибка попробуйте заново");
     }
 }
