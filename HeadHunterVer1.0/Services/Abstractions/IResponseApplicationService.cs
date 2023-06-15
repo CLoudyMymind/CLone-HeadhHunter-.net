@@ -6,7 +6,7 @@ namespace HeadHunterVer1._0.Services.Abstractions;
 
 public interface IResponseApplicationService
 {
-    public Task Create(VacancyViewModel model);
+    public Task<bool> Create(VacancyViewModel model);
 
     Task<ResponseApplication?> GetByIdApplicationViewModelAsync(string? id);
     Task<List<ApplicationViewModel>> GetAllApplicationViewModelInEmployerAsync(ClaimsPrincipal user);

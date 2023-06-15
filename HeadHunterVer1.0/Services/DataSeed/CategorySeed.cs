@@ -3,9 +3,7 @@ using HeadHunterVer1._0.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadHunterVer1._0.Services.DataSeed
-{
-    // dataseed категорий для работодателя
-    public static class CategorySeed
+{ public static class CategorySeed
     {
         public static void CategoryDataSeed(IServiceProvider serviceProvider)
         {

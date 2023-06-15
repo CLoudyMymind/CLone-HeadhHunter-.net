@@ -62,13 +62,7 @@ public class FileService : IFileService
         return await SaveAvatarFile(model.AvatarFile);
     }
 
-
-    /// <summary>
-    ///     метод для генирации файла pdf  пользователя с 2 параметрами
-    /// </summary>
-    /// <param name="id">айдишник юзера</param>
-    /// <param name="user">сам юзер</param>
-    /// <returns></returns>
+    
    public async Task<byte[]> GeneratePdfAsync(int id, ClaimsPrincipal user)
 {
     var dataUser = await _userService.UserSearchAsync(null, user);

@@ -31,8 +31,13 @@ public class HomeController : Controller
     {
         if (model.CreateApplicationViewModel != null)
         { 
-            await _applicationService.Create(model);
-          TempData["successfully"] = "Вы успешно отправили отклик";
+         var result =   await _applicationService.Create(model);
+         if (result == false)
+         {
+             TempData["error"] = "Вы пытаетесь подать тоже резюме на вакансию выберете нове";
+             return Redirect(Request.Headers["Referer"].ToString());
+         } 
+         TempData["successfully"] = "Вы успешно отправили отклик";
           return Redirect(Request.Headers["Referer"].ToString());
         }
 
