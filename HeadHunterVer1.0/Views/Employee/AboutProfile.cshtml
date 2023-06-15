@@ -32,71 +32,77 @@
             </div>
         </div>
     </div>
-    @foreach (var resume in Model.Resumes)
-    {
-        <div class="card" style="width: 100%;">
-            <div class="card-body">
-                <p class="card-text card-title">
-                    <strong>Имя резюме:</strong> <a asp-action="AboutResume" asp-route-id="@resume.Id">@resume.NameOfResume</a>
-                </p>
-                @if (resume.UpdatedAt is not null)
-                {
-                    <p class="card-text card-title">
-                        <strong>Почта:</strong> @resume.UpdatedAt
-                    </p>
-                }
-                <p class="card-text card-title">
-                    <strong>Опыт работы:</strong> @resume.WorkExperiences.Count
-                    <strong>Образование:</strong> @resume.Courses.Count
-                </p>
-            </div>
-        </div>
-    }
 </div>
+@if (User.IsInRole("employee"))
+{
+    <div class="container">
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
-<a class="btn btn-primary" asp-action="CreateResume">Создать резюме</a>
+        @foreach (var resume in Model.Resumes)
+        {
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <p class="card-text card-title">
+                        <strong>Имя резюме:</strong> <a asp-action="AboutResume" asp-route-id="@resume.Id">@resume.NameOfResume</a>
+                    </p>
+                    @if (resume.UpdatedAt is not null)
+                    {
+                        <p class="card-text card-title">
+                            <strong>Почта:</strong> @resume.UpdatedAt
+                        </p>
+                    }
+                    <p class="card-text card-title">
+                        <strong>Опыт работы:</strong> @resume.WorkExperiences.Count
+                        <strong>Образование:</strong> @resume.Courses.Count
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
 
-<form asp-action="EditProfile" asp-controller="Accounts" method="post" asp-antiforgery="true" enctype="multipart/form-data" asp-route-id="@Model.userId">
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label id="nicknameLabel" asp-for="NameCompanyOrUser">Введите имя:</label>
-                        <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser" class="form-control">
-                        <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
+    <a class="btn btn-primary" asp-action="CreateResume">Создать резюме</a>
+
+    <form asp-action="EditProfile" asp-controller="Accounts" method="post" asp-antiforgery="true" enctype="multipart/form-data" asp-route-id="@Model.userId">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Email">Электронная почта:</label>
-                        <input type="email" asp-for="Email" class="form-control">
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label id="nicknameLabel" asp-for="NameCompanyOrUser">Введите имя:</label>
+                            <input type="text" id="nicknameInput" asp-for="NameCompanyOrUser" class="form-control">
+                            <span asp-validation-for="NameCompanyOrUser" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email">Электронная почта:</label>
+                            <input type="email" asp-for="Email" class="form-control">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NewPassword">Новый пароль:</label>
+                            <input type="password" asp-for="NewPassword" class="form-control">
+                            <span asp-validation-for="NewPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="OldPassword">Старый Пароль:</label>
+                            <input type="password" asp-for="OldPassword" class="form-control">
+                            <span asp-validation-for="OldPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AvatarFile">Загрузите фото</label>
+                            <input type="file" asp-for="AvatarFile" class="form-control">
+                            <span asp-validation-for="AvatarFile" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="NewPassword">Новый пароль:</label>
-                        <input type="password" asp-for="NewPassword" class="form-control">
-                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary" id="saveProfileChanges">Сохранить изменения</button>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="OldPassword">Старый Пароль:</label>
-                        <input type="password" asp-for="OldPassword" class="form-control">
-                        <span asp-validation-for="OldPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="AvatarFile">Загрузите фото</label>
-                        <input type="file" asp-for="AvatarFile" class="form-control">
-                        <span asp-validation-for="AvatarFile" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary" id="saveProfileChanges">Сохранить изменения</button>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+}

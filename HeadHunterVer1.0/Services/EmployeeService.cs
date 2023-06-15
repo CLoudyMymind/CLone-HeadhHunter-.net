@@ -25,12 +25,19 @@ public class EmployeeService : IEmployeeService
 
     public async Task<List<ResumeViewModel>> GetAllResume()
     {
-        return _mapTo.MapResumeToResumeViewModels(
+        return _mapTo.MapListResumeToResumeViewModels(
             await _db.Resumes
                 .Include(r => r.Courses)
                 .Include(r => r.Employee)
                 .Include(r => r.Category)
                 .Include(r => r.WorkExperiences).ToListAsync());
+    }
+
+    public async Task<List<ResumeViewModel>> GetAllResumeInUser(ClaimsPrincipal user)
+    {
+        var userData = await _userManager.GetUserAsync(user);
+        return userData != null ? _mapTo.MapListResumeToResumeViewModels(await _db.Resumes.Where(r => r.Employee.Id == userData.Id).OrderByDescending(r => r.UpdatedAt).ToListAsync())
+            : throw new Exception("Такого юзера нету");
     }
 
     public async Task CreateResumeAsync(CreateResumeViewModel viewModel, ClaimsPrincipal user)

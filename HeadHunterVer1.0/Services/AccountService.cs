@@ -68,13 +68,13 @@ public class AccountService : IAccountService
         }
     }
 
-    public async Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user)
+    public async Task<AboutViewModel> AboutProfileAsync(string id, ClaimsPrincipal user, string? check)
     {
         var userData = await _userService.UserSearchAsync(id, user);
         if (userData == null) throw new Exception("Произошла ошибка, обратитесь в поддержку");
-        if (user.IsInRole("employer"))
-            return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyInUserAsync(user));
-        if (user.IsInRole("employee"))
+        if (user.IsInRole("employer") || check == "checkInRoleIsEmployee")
+                return await _accountExtensions.EmployerAboutViewModelExtensions(userData, userData.PathFile, userData, await _employerService.GetALlVacancyInUserAsync(user));
+        if (user.IsInRole("employee") || check == "checkInRoleIsEmployer")
             return await _accountExtensions.EmployeeAboutViewModelExtensions(userData, userData.PathFile, userData);
         throw new Exception("Произошла ошибка, обратитесь в поддержку");
     }

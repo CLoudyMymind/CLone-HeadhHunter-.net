@@ -16,23 +16,23 @@ public class EmployerController : Controller
     private readonly IAccountService _accountService;
     private readonly MapTo _mapTo;
     private readonly ICategoryService _categoryService;
+    private readonly IResponseApplicationService _applicationService;
 
 
     public EmployerController(IEmployerService employerService, IAccountService accountService, MapTo mapTo,
-        ICategoryService categoryService)
+        ICategoryService categoryService, IResponseApplicationService applicationService)
     {
         _employerService = employerService;
         _accountService = accountService;
         _mapTo = mapTo;
         _categoryService = categoryService;
+        _applicationService = applicationService;
     }
-    [Authorize(Roles = "employer")]
+    [Authorize(Roles = "employer, employee")]
     [HttpGet]
-    public async Task<IActionResult> AboutProfile(string id)
+    public async Task<IActionResult> AboutProfile(string id, string checkInRoleIsEmployee)
     {
-        if (HttpContext.User.IsInRole("employer"))
-            return View(await _accountService.AboutProfileAsync(id, HttpContext.User));
-        return NotFound();
+            return View(await _accountService.AboutProfileAsync(id, HttpContext.User, checkInRoleIsEmployee));
     }
     [Authorize(Roles = "employer")]
 
@@ -61,7 +61,7 @@ public class EmployerController : Controller
     [Authorize(Roles = "employer,employee")]
     public async Task<IActionResult> AboutVacancy(string id)
     {
-        return View(await _employerService.AboutVacancyAsync(id));
+        return View(await _employerService.AboutVacancyAsync(id, HttpContext.User));
     }
     [Authorize(Roles = "employer")]
 
@@ -119,5 +119,12 @@ public class EmployerController : Controller
         }
 
         return RedirectToAction("AboutProfile");
+    }
+    [HttpGet]
+    [Authorize(Roles = "employer")]
+    public async Task<IActionResult> GetAllListApplicationResponse()
+    {
+        var model = await _applicationService.GetAllApplicationViewModelInEmployerAsync(HttpContext.User);
+        return View(model);
     }
 }

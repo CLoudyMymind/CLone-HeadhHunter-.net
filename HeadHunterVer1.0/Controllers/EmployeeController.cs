@@ -16,28 +16,28 @@ public class EmployeeController : Controller
     private readonly IEmployeeService _employeeService;
     private readonly UserManager<User> _userManager;
     private readonly IFileService _fileService;
+    private readonly IResponseApplicationService _applicationService;
 
     public EmployeeController(
         IAccountService accountService, 
         ICategoryService categoryService, 
         IEmployeeService employeeService, 
         UserManager<User> userManager, 
-        IFileService fileService)
+        IFileService fileService, IResponseApplicationService applicationService)
     {
         _accountService = accountService;
         _categoryService = categoryService;
         _employeeService = employeeService;
         _userManager = userManager;
         _fileService = fileService;
+        _applicationService = applicationService;
     }
     
-    [Authorize(Roles = "employee")]
+    [Authorize(Roles = "employee, employer")]
     [HttpGet]
-    public async Task<IActionResult> AboutProfile(string id)
+    public async Task<IActionResult> AboutProfile(string id, string checkInRoleIsEmployer)
     {
-        if (HttpContext.User.IsInRole("employee"))
-            return View(await _accountService.AboutProfileAsync(id , HttpContext.User));
-        return NotFound();
+            return View(await _accountService.AboutProfileAsync(id , HttpContext.User, checkInRoleIsEmployer));
     }
     
     [Authorize(Roles = "employee")]
@@ -85,6 +85,13 @@ public class EmployeeController : Controller
         }
     }
 
+    [HttpGet]
+    [Authorize(Roles = "employee")]
+    public async Task<IActionResult> GetAllListApplicationResponse()
+    {
+        var model = await _applicationService.GetAllApplicationViewModelInEmployeeAsync(HttpContext.User);
+        return View(model);
+    }
     // [HttpGet]
     // public IActionResult EditResume(int id)
     // {

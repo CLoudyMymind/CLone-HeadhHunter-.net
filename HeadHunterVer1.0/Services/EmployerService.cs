@@ -16,15 +16,17 @@ public class EmployerService : IEmployerService
     private readonly UserManager<User> _userManager;
     private readonly MapTo _mapTo;
     private readonly ICategoryService _categoryService;
+    private readonly IEmployeeService _employeeService;
 
 
     public EmployerService(HeadHunterContext headHunterContext, 
-        UserManager<User> userManager, MapTo mapTo, ICategoryService categoryService)
+        UserManager<User> userManager, MapTo mapTo, ICategoryService categoryService, IEmployeeService employeeService)
     {
         _headHunterContext = headHunterContext;
         _userManager = userManager;
         _mapTo = mapTo;
         _categoryService = categoryService;
+        _employeeService = employeeService;
     }
 
     public async Task CreateVacancyAsync(VacancyJobsCreateViewModel model, ClaimsPrincipal user)
@@ -47,14 +49,14 @@ public class EmployerService : IEmployerService
         if (dataUser == null) throw new Exception("Произошла ошибка попробуйте позже");
         var vacancyViewModels = await _headHunterContext.Vacancies
             .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Where(v => v.UserId == dataUser)
-            .Select(v => _mapTo.MapVacancyToVacancyViewModel(v)).ToListAsync();
+            .Select(v => _mapTo.MapVacancyToVacancyViewModel(v, null, null)).ToListAsync();
         return vacancyViewModels;
     }
 
     public async Task<List<VacancyViewModel>> GetListVacancyAsync()
     {
         var vacancyViewModels = await _headHunterContext.Vacancies
-            .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Select(v => _mapTo.MapVacancyToVacancyViewModel(v)).ToListAsync();
+            .Include(v => v.Category).OrderByDescending(v => v.UpdateVacancyBid).Select(v => _mapTo.MapVacancyToVacancyViewModel(v, null, null)).ToListAsync();
         return vacancyViewModels;
     }
     private async Task<Vacancy> GetByIdVacancyAsync(string? id)
@@ -74,8 +76,8 @@ public class EmployerService : IEmployerService
       await _headHunterContext.SaveChangesAsync();
     }
 
-    public async Task<VacancyViewModel> AboutVacancyAsync(string id )=> 
-        _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancyAsync(id));
+    public async Task<VacancyViewModel> AboutVacancyAsync(string id , ClaimsPrincipal user)=> 
+        _mapTo.MapVacancyToVacancyViewModel(await GetByIdVacancyAsync(id) ,await _employeeService.GetAllResumeInUser(user), null);
     public async Task UpdatePublishStatusAsync(string id,  bool isPublished)
     {
         var data = await GetByIdVacancyAsync(id);

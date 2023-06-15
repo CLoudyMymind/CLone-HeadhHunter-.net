@@ -34,8 +34,11 @@
                         <strong>Роль:</strong> @Model.Role
                     </p>
                 </div>
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
-                <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
+               @if (@UserManager.GetUserId(User) == @Model.userId)
+               {
+                   <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать профиль</button>
+                   <a asp-action="Create" class="btn-outline-success btn" asp-controller="Employer" asp-route-id="@UserManager.GetUserId(User)">Создать вакансию</a>
+               }
             </div>
         </div>
     </div>

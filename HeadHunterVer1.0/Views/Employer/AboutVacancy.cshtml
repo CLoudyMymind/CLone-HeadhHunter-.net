@@ -6,7 +6,10 @@
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
-
+@if (TempData["successfully"] != null)
+{
+    <p class="alert-success alert">@TempData["successfully"]</p>
+}
 <div class="row container">
     <div class="col-md-12">
         <div class="card mb-12">
@@ -26,10 +29,47 @@
                 @if (User.IsInRole("employee"))
                 {
                     <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">Вернуться обратно</a>
-                    <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">Откликнуться</a>
+                    <a class="btn-outline-success btn text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Откликнуться</a>
                 }
-
             </div>
         </div>
     </div>
 </div>
+
+<form asp-action="Application" asp-controller="Home" method="post" asp-antiforgery="true" enctype="multipart/form-data">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Список ваших резюме</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-control custom-select" name="CreateApplicationViewModel.selectedResumeId" asp-for="CreateApplicationViewModel.selectedResumeId">
+                        @if (Model.ResumeViewModels.Any())
+                        {
+                            @foreach (var data in Model.ResumeViewModels)
+                            {
+                                <option value="@data.Id">@data.NameOfResume</option>
+                            }
+                        }
+                        else
+                        {
+                            <option >вы еще не создали резюме</option>
+                        }
+                    </select>
+                    <input type="hidden" value="@Model.Id" name="CreateApplicationViewModel.VacancyId" asp-for="CreateApplicationViewModel.VacancyId">
+                    <input type="hidden" value="@UserManager.GetUserId(User)" name="CreateApplicationViewModel.UserId" asp-for="CreateApplicationViewModel.UserId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+
+                    @if (Model.ResumeViewModels.Any())
+                    {
+                        <button type="submit" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Отправить резюме</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
