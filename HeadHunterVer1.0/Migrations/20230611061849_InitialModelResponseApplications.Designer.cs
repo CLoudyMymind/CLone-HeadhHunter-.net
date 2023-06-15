@@ -3,6 +3,7 @@ using System;
 using HeadHunterVer1._0.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunterVer1._0.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    partial class HeadHunterContextModelSnapshot : ModelSnapshot
+    [Migration("20230611061849_InitialModelResponseApplications")]
+    partial class InitialModelResponseApplications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,46 +37,6 @@ namespace HeadHunterVer1._0.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("HeadHunterVer1._0.Models.Chat", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateSendMessage")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserEmployeeId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserEmployerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("VacancyId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
-
-                    b.HasIndex("UserEmployeeId");
-
-                    b.HasIndex("UserEmployerId");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employee.Course", b =>
@@ -240,7 +203,10 @@ namespace HeadHunterVer1._0.Migrations
                     b.Property<DateTime>("DispatchTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<bool?>("IsAcceptOrRejectedResponse")
+                    b.Property<bool>("IsAcceptResponse")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRejectedAcceptResponse")
                         .HasColumnType("boolean");
 
                     b.Property<int>("ResumeId")
@@ -463,41 +429,6 @@ namespace HeadHunterVer1._0.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("HeadHunterVer1._0.Models.Chat", b =>
-                {
-                    b.HasOne("HeadHunterVer1._0.Models.Employee.Resume", "Resume")
-                        .WithMany()
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HeadHunterVer1._0.Models.User", "UserEmployee")
-                        .WithMany()
-                        .HasForeignKey("UserEmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HeadHunterVer1._0.Models.User", "UserEmployer")
-                        .WithMany()
-                        .HasForeignKey("UserEmployerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HeadHunterVer1._0.Models.Employer.Vacancy", "Vacancy")
-                        .WithMany()
-                        .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-
-                    b.Navigation("UserEmployee");
-
-                    b.Navigation("UserEmployer");
-
-                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employee.Course", b =>
