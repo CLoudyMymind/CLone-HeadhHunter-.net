@@ -58,11 +58,12 @@ public class MapTo
     }
 
 
-    public VacancyViewModel MapVacancyToVacancyViewModel(Vacancy model)
+    public VacancyViewModel MapVacancyToVacancyViewModel(Vacancy model, List<ResumeViewModel>? resumeViewModels, User? user)
     {
         
-        return  new VacancyViewModel
+        var data =  new VacancyViewModel
         {
+            
             Id = model.Id,
             Wages = model.Wages,
             IsPublished = model.IsPublished,
@@ -71,8 +72,13 @@ public class MapTo
             UpdateVacancyBid = model.UpdateVacancyBid,
             Description = model.Description,
             Title = model.Title,
-            SelectedCategoryName = model.Category,
+            SelectedCategoryName = model.Category!,
         };
+        if (user != null)
+            data.User = user; 
+        if (resumeViewModels != null)
+            data.ResumeViewModels = resumeViewModels;
+        return data;
     }
     public EditVacancyViewModel MapVacancyToEditVacancyViewModel(Vacancy model, List<Category> categories)
     {
@@ -91,7 +97,7 @@ public class MapTo
             CategoryViewModels = MapToListCategories(categories)
         };
     }
-    public List<ResumeViewModel> MapResumeToResumeViewModels(List<Resume> model)
+    public List<ResumeViewModel> MapListResumeToResumeViewModels(List<Resume> model)
     {
         return model.Select(resume => new ResumeViewModel
         {
@@ -109,6 +115,25 @@ public class MapTo
             WorkExperiences = resume.WorkExperiences,
             Courses = resume.Courses
         }).ToList();
+    }
+    public ResumeViewModel MapResumeToResumeViewModels(Resume model)
+    {
+        return  new ResumeViewModel
+        {
+            Id = model.Id,
+            Employee = model.Employee,
+            NameOfResume = model.NameOfResume,
+            ExpectedSalary = model.ExpectedSalary,
+            TelegramLink = model.TelegramLink,
+            Email = model.Email,
+            Phone = model.Phone,
+            FacebookLink = model.FacebookLink,
+            LinkedInLink = model.LinkedInLink,
+            UpdatedAt = model.UpdatedAt,
+            Category = model.Category,
+            WorkExperiences = model.WorkExperiences,
+            Courses = model.Courses
+        };
     }
 
     public  async Task<List<ResumeViewModel>> MapIQueryableResumeToResumeViewModel(IQueryable<Resume> resumeViewModel)
@@ -147,4 +172,35 @@ public class MapTo
         }).ToListAsync();
     }
 
+    public ResponseApplication MapToCreateResponseApplication(VacancyViewModel model)
+    {
+        if (model.CreateApplicationViewModel != null)
+        {
+            return new ResponseApplication()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = model.CreateApplicationViewModel.UserId,
+                VacancyId = model.CreateApplicationViewModel.VacancyId,
+                ResumeId = model.CreateApplicationViewModel.selectedResumeId,
+                DispatchTime = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("F"))
+            };
+        }
+
+        throw new Exception("Ошибка");
+    }
+
+    public List<ApplicationViewModel> MapFromResponseApplication(List<ResponseApplication> responseApplication)
+    {
+        
+        
+            return   responseApplication.Select(u => new ApplicationViewModel
+        {
+
+            Id = u.Id,
+            IsAcceptOrRejectedResponse = u.IsAcceptOrRejectedResponse != null && u.IsAcceptOrRejectedResponse.Value,
+            ResumeViewModel = MapResumeToResumeViewModels(u.Resume),
+            VacancyViewModel = MapVacancyToVacancyViewModel(u.Vacancy, null, u.Vacancy.User)
+        }).ToList();
+       
+    }
 }
