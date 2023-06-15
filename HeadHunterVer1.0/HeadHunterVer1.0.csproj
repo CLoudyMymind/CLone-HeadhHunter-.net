@@ -55,6 +55,20 @@
       <_ContentIncludedByDefault Remove="wwwroot\images\82e3b622-2c3d-460d-a5aa-665d82dcd8c1.jpg" />
       <_ContentIncludedByDefault Remove="wwwroot\images\96a4fa45-e672-4c96-b38d-40267b33d3f7.png" />
       <_ContentIncludedByDefault Remove="wwwroot\images\f6ab9e96-7198-4e06-a455-4c316ad00146.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\09da3a2d-1488-4a0d-93ee-ff33af9958ab.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\0ffe0001-b167-4ece-be1f-5705c083fd64.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\2008c3d3-e234-4774-b13b-e89016bf9b76.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\286b5122-2dfc-4de2-a447-59486e61416f.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\4df2d310-d95a-4501-800a-4aafac619a00.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\577320bf-b3fb-4f6e-9268-ef9cd4df0978.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\8d9be880-59a6-415f-90f6-18f5d1f9a026.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\9108b822-37e8-4814-906c-9621760a479b.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\9e5b50b9-807e-4b5a-8c8d-ab0c179c4086.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\a04b6736-5160-48d8-b59f-f2b757779fb8.jpeg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\b8300aa4-cb71-4329-adce-2a2fd5de07b0.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\bcd21d46-6ed7-46e5-9ad6-b850d1201a68.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\fcab2870-7457-4f8d-a97a-0e30e0b49708.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\ff65a450-8c8f-4734-82ee-0f41a6921265.jpeg" />
     </ItemGroup>
 
     <ItemGroup>
