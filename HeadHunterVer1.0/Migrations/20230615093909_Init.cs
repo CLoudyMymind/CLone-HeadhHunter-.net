@@ -171,6 +171,33 @@ namespace HeadHunterVer1._0.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    DateSendMessage = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UserEmployeeId = table.Column<string>(type: "text", nullable: false),
+                    UserEmployerId = table.Column<string>(type: "text", nullable: false),
+                    Message = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chats_AspNetUsers_UserEmployeeId",
+                        column: x => x.UserEmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Chats_AspNetUsers_UserEmployerId",
+                        column: x => x.UserEmployerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Resumes",
                 columns: table => new
                 {
@@ -182,8 +209,9 @@ namespace HeadHunterVer1._0.Migrations
                     TelegramLink = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Phone = table.Column<string>(type: "text", nullable: false),
-                    FacebookLink = table.Column<string>(type: "text", nullable: false),
-                    LinkedInLink = table.Column<string>(type: "text", nullable: false),
+                    FacebookLink = table.Column<string>(type: "text", nullable: true),
+                    LinkedInLink = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CategoryId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -276,6 +304,40 @@ namespace HeadHunterVer1._0.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ResponseApplications",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    ResumeId = table.Column<int>(type: "integer", nullable: false),
+                    VacancyId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    DispatchTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsAcceptOrRejectedResponse = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResponseApplications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResponseApplications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResponseApplications_Resumes_ResumeId",
+                        column: x => x.ResumeId,
+                        principalTable: "Resumes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResponseApplications_Vacancies_VacancyId",
+                        column: x => x.VacancyId,
+                        principalTable: "Vacancies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -314,9 +376,34 @@ namespace HeadHunterVer1._0.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Chats_UserEmployeeId",
+                table: "Chats",
+                column: "UserEmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_UserEmployerId",
+                table: "Chats",
+                column: "UserEmployerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Courses_ResumeId",
                 table: "Courses",
                 column: "ResumeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResponseApplications_ResumeId",
+                table: "ResponseApplications",
+                column: "ResumeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResponseApplications_UserId",
+                table: "ResponseApplications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResponseApplications_VacancyId",
+                table: "ResponseApplications",
+                column: "VacancyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resumes_CategoryId",
@@ -363,16 +450,22 @@ namespace HeadHunterVer1._0.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Chats");
+
+            migrationBuilder.DropTable(
                 name: "Courses");
 
             migrationBuilder.DropTable(
-                name: "Vacancies");
+                name: "ResponseApplications");
 
             migrationBuilder.DropTable(
                 name: "WorkExperiences");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Vacancies");
 
             migrationBuilder.DropTable(
                 name: "Resumes");

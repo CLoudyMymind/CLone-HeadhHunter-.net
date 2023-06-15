@@ -48,9 +48,6 @@ namespace HeadHunterVer1._0.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("UserEmployeeId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -59,19 +56,11 @@ namespace HeadHunterVer1._0.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("VacancyId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
 
                     b.HasIndex("UserEmployeeId");
 
                     b.HasIndex("UserEmployerId");
-
-                    b.HasIndex("VacancyId");
 
                     b.ToTable("Chats");
                 });
@@ -467,12 +456,6 @@ namespace HeadHunterVer1._0.Migrations
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.Chat", b =>
                 {
-                    b.HasOne("HeadHunterVer1._0.Models.Employee.Resume", "Resume")
-                        .WithMany()
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HeadHunterVer1._0.Models.User", "UserEmployee")
                         .WithMany()
                         .HasForeignKey("UserEmployeeId")
@@ -485,19 +468,9 @@ namespace HeadHunterVer1._0.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HeadHunterVer1._0.Models.Employer.Vacancy", "Vacancy")
-                        .WithMany()
-                        .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-
                     b.Navigation("UserEmployee");
 
                     b.Navigation("UserEmployer");
-
-                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employee.Course", b =>

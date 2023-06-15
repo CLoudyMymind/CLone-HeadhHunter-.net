@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunterVer1._0.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20230604132007_ChangeToNullable")]
-    partial class ChangeToNullable
+    [Migration("20230615093909_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,35 @@ namespace HeadHunterVer1._0.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Chat", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateSendMessage")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEmployeeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEmployerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserEmployeeId");
+
+                    b.HasIndex("UserEmployerId");
+
+                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employee.Course", b =>
@@ -105,6 +134,9 @@ namespace HeadHunterVer1._0.Migrations
                     b.Property<string>("TelegramLink")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -190,6 +222,39 @@ namespace HeadHunterVer1._0.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Vacancies");
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.ResponseApplication", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DispatchTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool?>("IsAcceptOrRejectedResponse")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ResumeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("VacancyId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResumeId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("ResponseApplications");
                 });
 
             modelBuilder.Entity("HeadHunterVer1._0.Models.User", b =>
@@ -392,6 +457,25 @@ namespace HeadHunterVer1._0.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("HeadHunterVer1._0.Models.Chat", b =>
+                {
+                    b.HasOne("HeadHunterVer1._0.Models.User", "UserEmployee")
+                        .WithMany()
+                        .HasForeignKey("UserEmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeadHunterVer1._0.Models.User", "UserEmployer")
+                        .WithMany()
+                        .HasForeignKey("UserEmployerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserEmployee");
+
+                    b.Navigation("UserEmployer");
+                });
+
             modelBuilder.Entity("HeadHunterVer1._0.Models.Employee.Course", b =>
                 {
                     b.HasOne("HeadHunterVer1._0.Models.Employee.Resume", null)
@@ -440,6 +524,33 @@ namespace HeadHunterVer1._0.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HeadHunterVer1._0.Models.ResponseApplication", b =>
+                {
+                    b.HasOne("HeadHunterVer1._0.Models.Employee.Resume", "Resume")
+                        .WithMany()
+                        .HasForeignKey("ResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeadHunterVer1._0.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeadHunterVer1._0.Models.Employer.Vacancy", "Vacancy")
+                        .WithMany()
+                        .HasForeignKey("VacancyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Resume");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
