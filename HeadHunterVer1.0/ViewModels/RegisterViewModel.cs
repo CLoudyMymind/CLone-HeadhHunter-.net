@@ -12,7 +12,7 @@ public class RegisterViewModel
     public string? PathToAvatarFile { get; set; }
     
     [DataType(DataType.Text , ErrorMessage = "тут должен быть только текст")]
-    [Required(ErrorMessage = "Вы не заполнели имя (Для заполнения нужно выбрать роль)")]
+    [Required(ErrorMessage = "Вы не заполнели имя)")]
     [Display(Name = "Укажите ваше имя")]
     public string NameCompanyOrUser { get; set; }
     
