@@ -22,11 +22,10 @@ public class ResponseApplicationService : IResponseApplicationService
         _userManager = userManager;
     }
 
-    public async Task<List<ResponseApplication>> GetAllListApplicationAsync() => await _db.ResponseApplications.ToListAsync();
-    
+    private async Task<List<ResponseApplication>> ListResponseApplicationAsync() => await _db.ResponseApplications.ToListAsync();
     public  async Task<bool> Create(VacancyViewModel model)
     {
-        var checkIsApplication = await GetAllListApplicationAsync();
+        var checkIsApplication = await ListResponseApplicationAsync();
         if (checkIsApplication.Any(t => t.ResumeId == model.CreateApplicationViewModel.selectedResumeId))
         {
             return false;
@@ -34,8 +33,8 @@ public class ResponseApplicationService : IResponseApplicationService
         await _db.ResponseApplications.AddAsync(_mapTo.MapToCreateResponseApplication(model));
         await _db.SaveChangesAsync();
         return true;
-        throw new Exception("132");
     }
+
     /// <summary>
     /// вывод откликов для работодателя
     /// </summary>

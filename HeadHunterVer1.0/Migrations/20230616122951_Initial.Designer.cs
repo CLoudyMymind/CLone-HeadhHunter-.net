@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunterVer1._0.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20230615093909_Init")]
-    partial class Init
+    [Migration("20230616122951_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
